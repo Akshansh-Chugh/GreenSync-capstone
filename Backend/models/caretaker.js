@@ -42,3 +42,5 @@ const caretakerSchema= new Schema({
 },{
     timestamps:true
 })
+
+export const caretaker = mongoose.model("Caretaker",caretakerSchema)
