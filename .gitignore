@@ -1,3 +1,8 @@
 /node_modules/
 .env
 temp
+
+
+
+constants.js
+.gitignore
