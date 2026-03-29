@@ -1,50 +1,48 @@
-/* 🌿 GLOBAL */
+/* ================= GLOBAL ================= */
 body {
-    font-family: 'Nunito', Arial, sans-serif;
+    font-family: 'Nunito', sans-serif;
     margin: 0;
-    min-height: 100vh;
-    color: #213b2e;
-    background: linear-gradient(120deg, #f0fff8, #e9f5e9, #43ea7f);
-    background-size: 200% 200%;
-    animation: gradientMove 12s ease infinite;
-}
-
-@keyframes gradientMove {
-    0% {background-position: 0% 50%;}
-    50% {background-position: 100% 50%;}
-    100% {background-position: 0% 50%;}
+    background: linear-gradient(120deg, #e8f5e9, #a5d6a7);
+    color: #1b3c2e;
+    transition: 0.3s;
 }
 
 .content-wrapper {
-    padding: 20px;
+    max-width: 1100px;
+    margin: auto;
+    padding: 30px 20px;
+    text-align: center;
 }
 
-/* 🌿 HEADER */
+/* ================= HEADER ================= */
 header {
     background: linear-gradient(90deg, #43ea7f, #2e7d32);
-    padding: 20px;
-    text-align: center;
+    padding: 20px 0;
 }
 
 .header-container {
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 10px;
+    justify-content: center;
+    gap: 15px;
 }
 
 .logo {
-    width: 60px;
-    border-radius: 10px;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
 }
 
-h1 { margin: 0; }
+h1 {
+    margin: 0;
+    font-size: 28px;
+}
 
-/* 🌿 NAVBAR */
+/* ================= NAVBAR ================= */
 .navbar {
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: 40px;
     background: #2e7d32;
     padding: 12px;
 }
@@ -52,35 +50,62 @@ h1 { margin: 0; }
 .nav-link {
     color: white;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .nav-link:hover {
-    color: #43ea7f;
+    color: #a5d6a7;
 }
 
-/* 🌿 CARDS */
-.data-section {
-    text-align: center;
+/* ================= CARDS ================= */
+#pot-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 30px;
 }
 
 .metric-card {
-    display: inline-block;
-    padding: 20px;
-    margin: 10px;
+    width: 220px;
+    padding: 25px;
     background: white;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border-radius: 18px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: all 0.35s ease;
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+}
+
+.metric-card.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.metric-card:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+}
+
+/* ================= METRICS ================= */
+.data-section {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin: 30px 0;
 }
 
 .metric-value {
-    font-size: 1.5em;
+    font-size: 20px;
     font-weight: bold;
 }
 
-/* 🌿 BUTTON */
+/* ================= BUTTON ================= */
 button {
-    padding: 10px 20px;
+    margin-top: 15px;
+    padding: 10px 18px;
     background: #2e7d32;
     color: white;
     border: none;
@@ -92,16 +117,61 @@ button:hover {
     background: #256d46;
 }
 
-/* 🌿 FOOTER */
-footer {
-    text-align: center;
-    padding: 10px;
-    background: #1b5e20;
-    color: white;
-    margin-top: 30px;
+/* ================= CHART ================= */
+.chart-container {
+    max-width: 800px;
+    margin: 30px auto;
 }
-#pot-list {
+
+/* ================= ACTION BUTTON ================= */
+.actions-container {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
+    margin: 30px 0;
+}
+
+/* ================= FOOTER ================= */
+footer {
+    background: #1b5e20;
+    color: white;
+    text-align: center;
+    padding: 12px;
+    margin-top: 40px;
+}
+
+/* ================= DARK MODE ================= */
+body.dark {
+    background: linear-gradient(120deg, #1b2b23, #0f1f17);
+    color: #e8f5e9;
+}
+
+body.dark header {
+    background: linear-gradient(90deg, #1b5e20, #0d3b09);
+}
+
+body.dark .navbar {
+    background: #0d3b09;
+}
+
+body.dark .metric-card {
+    background: #1e2d26;
+    color: #e8f5e9;
+}
+
+body.dark footer {
+    background: #0d3b09;
+}
+
+body.dark button {
+    background: #43ea7f;
+    color: #0d3b09;
+}
+
+/* ================= DARK TOGGLE ================= */
+#theme-toggle {
+    margin-left: 10px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
 }

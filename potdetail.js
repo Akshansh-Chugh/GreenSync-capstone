@@ -1,8 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    // =========================
-    // GET POT ID FROM URL
-    // =========================
     const params = new URLSearchParams(window.location.search);
     const potId = params.get("potId");
 
@@ -11,14 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const moistureEl = document.getElementById("moisture");
     const humidityEl = document.getElementById("humidity");
 
-    if (!potId) {
-        potName.innerText = "No Plant Selected";
-        return;
-    }
-
-    // =========================
-    // DUMMY DATA (replace with API later)
-    // =========================
     const plantData = {
         1: { name: "Aloe Vera", temp: 26, moisture: 45, humidity: 52 },
         2: { name: "Tulsi", temp: 28, moisture: 50, humidity: 55 },
@@ -27,22 +16,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const data = plantData[potId];
 
-    if (!data) {
-        potName.innerText = "Plant not found";
-        return;
-    }
+    if (!data) return;
 
-    // =========================
-    // UPDATE UI
-    // =========================
     potName.innerText = data.name;
     tempEl.innerText = data.temp + " °C";
     moistureEl.innerText = data.moisture + " %";
     humidityEl.innerText = data.humidity + " %";
 
-    // =========================
-    // UPDATE CHART
-    // =========================
     const ctx = document.getElementById("sensorChart");
 
     if (ctx && window.Chart) {
@@ -53,17 +33,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 datasets: [
                     {
                         label: "Temperature",
-                        data: [data.temp - 2, data.temp - 1, data.temp, data.temp + 1],
+                        data: [24, 25, 26, 27],
                         borderColor: "#43ea7f"
                     },
                     {
                         label: "Moisture",
-                        data: [data.moisture - 2, data.moisture, data.moisture - 1, data.moisture + 2],
+                        data: [43, 45, 44, 46],
                         borderColor: "#2e7d32"
                     },
                     {
                         label: "Humidity",
-                        data: [data.humidity - 1, data.humidity, data.humidity + 1, data.humidity + 2],
+                        data: [50, 52, 53, 54],
                         borderColor: "#8bc34a"
                     }
                 ]
@@ -74,14 +54,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // =========================
-    // PUMP BUTTON (dummy action)
-    // =========================
     const pumpBtn = document.getElementById("water-pump-btn");
 
     if (pumpBtn) {
         pumpBtn.addEventListener("click", () => {
-            alert(`Water pump activated for ${data.name} 💧`);
+            alert("Water Pump Activated 💧");
         });
     }
 
