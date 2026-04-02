@@ -8,26 +8,87 @@
     <link rel="icon" type="image/png" href="assets/logo.png">
 </head>
 <body>
+    <div class="floating-leaf leaf1"></div>
+    <div class="floating-leaf leaf2"></div>
+    <div class="floating-leaf leaf3"></div>
+    <div class="floating-leaf leaf4"></div>
+    <div class="floating-leaf leaf5"></div>
+    <div class="floating-leaf leaf6"></div>
+
     <div id="main-app">
         <header></header>
         <nav class="navbar"></nav>
-        
+
         <main class="content-wrapper">
-            <section class="page-section">
+            <section class="page-section fade-in">
                 <h2>Contact Us</h2>
-                <div class="contact-content">
-                    <p>Have questions or feedback? We'd love to hear from you!</p>
-                    <ul>
-                        <li><strong>Email:</strong> <a href="mailto:chughakshansh@gmail.com">chughakshansh@gmail.com</a></li>
-                        <li><strong>Phone:</strong> +91 7719604986</li>
-                        <li><strong>Address:</strong> 147004, Thapar , Punjab, India</li>
-                    </ul>
+                <p style="text-align:center; color: var(--text-secondary); margin-bottom: 2rem;">Have questions or feedback? We'd love to hear from you!</p>
+
+                <div class="contact-grid">
+                    <!-- Contact Form -->
+                    <div class="contact-form-wrapper">
+                        <form id="contactForm">
+                            <input type="text" placeholder="Your Name" required>
+                            <input type="email" placeholder="you@example.com" required>
+                            <textarea placeholder="Tell us what's on your mind..." rows="5" required></textarea>
+                            <button type="submit">Send Message</button>
+                        </form>
+                    </div>
+
+                    <!-- Team Cards -->
+                    <div class="team-section">
+                        <h3>Our Team</h3>
+                        <p class="team-location">📍 147004, Thapar, Punjab, India</p>
+                        <div class="team-grid">
+                            <div class="team-card">
+                                <div class="team-avatar">AC</div>
+                                <div class="team-info">
+                                    <strong>Akshansh Chugh</strong>
+                                    <span>📧 chughakshansh@gmail.com</span>
+                                    <span>📞 +91 7719604986</span>
+                                </div>
+                            </div>
+                            <div class="team-card">
+                                <div class="team-avatar">SS</div>
+                                <div class="team-info">
+                                    <strong>Sumit Sinha</strong>
+                                    <span>📧 sumit525sinha@gmail.com</span>
+                                    <span>📞 +91 9953223525</span>
+                                </div>
+                            </div>
+                            <div class="team-card">
+                                <div class="team-avatar">RG</div>
+                                <div class="team-info">
+                                    <strong>Rahul Gupta</strong>
+                                    <span>📧 1104rahulgupta@gmail.com</span>
+                                    <span>📞 +91 7982121330</span>
+                                </div>
+                            </div>
+                            <div class="team-card">
+                                <div class="team-avatar">AK</div>
+                                <div class="team-info">
+                                    <strong>Avanya Khandelwal</strong>
+                                    <span>📧 akhandelwal2_be23@gmail.com</span>
+                                    <span>📞 +91 7976890868</span>
+                                </div>
+                            </div>
+                            <div class="team-card">
+                                <div class="team-avatar">TT</div>
+                                <div class="team-info">
+                                    <strong>Tiya</strong>
+                                    <span>📧 ttiya_be23@thapar.edu</span>
+                                    <span>📞 +91 7719539430</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
         </main>
-        
+
         <footer></footer>
     </div>
+
     <script src="js/main.js" defer></script>
 </body>
 </html>

@@ -3,13 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - GreenSync</title>
+    <title>GreenSync | Login</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" type="image/png" href="assets\logo.png">
 </head>
 <body>
-    <div class="floating-leaf leaf1"></div>
-    <div class="floating-leaf leaf2"></div>
     <div class="floating-leaf leaf1"></div>
     <div class="floating-leaf leaf2"></div>
     <div class="floating-leaf leaf3"></div>
@@ -17,32 +14,31 @@
     <div class="floating-leaf leaf5"></div>
     <div class="floating-leaf leaf6"></div>
 
+    <div class="auth-layout">
+        <div class="auth-card">
+            <div class="auth-icon">🌿</div>
+            <h2>Welcome Back!</h2>
+            <p class="subtitle">Sign in to your GreenSync dashboard</p>
 
-    <header>
-        <div class="header-container">
-            <img src="assets/logo.jpg" alt="GreenSync Logo" class="logo">
-            <div>
-                <h1>GreenSync</h1>
-                <h3>Self-Watering Pot</h3>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" class="form-input" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+
+            <div class="extra">
+                <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
             </div>
         </div>
-    </header>
+    </div>
 
-    <main id="login-section-wrapper">
-        <section id="login-section">
-            <h2>Welcome Back!</h2>
-            <form id="loginForm">
-                <input type="email" name="email" placeholder="Enter your email">
-                <input type="password" name="password" placeholder="Enter your password">
-                <button type="submit">Login</button>
-            </form>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2025 GreenSync. All rights reserved.</p>
-    </footer>
-
+    <script src="js/main.js" defer></script>
     <script src="js/login.js" defer></script>
 </body>
 </html>

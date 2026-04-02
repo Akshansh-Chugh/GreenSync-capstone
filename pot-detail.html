@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pot Details - GreenSync</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="floating-leaf leaf1"></div>
+    <div class="floating-leaf leaf2"></div>
+    <div class="floating-leaf leaf3"></div>
+    <div class="floating-leaf leaf4"></div>
+    <div class="floating-leaf leaf5"></div>
+    <div class="floating-leaf leaf6"></div>
+
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="my-plants.html" class="header-brand">
+                <div class="brand-icon">🌿</div>
+                <div class="brand-text">
+                    <h1>GreenSync</h1>
+                    <p>Smart Plant Care</p>
+                </div>
+            </a>
+            <button class="mobile-menu-btn" id="menuBtn">☰</button>
+            <nav class="site-nav" id="siteNav"></nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="content-wrapper">
+            <a href="my-plants.html" class="back-link">← Back to My Plants</a>
+
+            <div class="page-header">
+                <div class="detail-header">
+                    <span id="potIcon">🌱</span>
+                    <div>
+                        <h2 id="potName">Loading...</h2>
+                        <p>Real-time sensor readings from ESP32</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sensor Metrics -->
+            <div class="metrics-grid" id="metricsGrid">
+                <div class="card metric-card fade-in fade-in-1">
+                    <div class="card-body">
+                        <div class="metric-icon-box temp">🌡️</div>
+                        <div>
+                            <div class="metric-label">Temperature</div>
+                            <div class="metric-value" id="temp">--</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card metric-card fade-in fade-in-2">
+                    <div class="card-body">
+                        <div class="metric-icon-box moisture">💧</div>
+                        <div>
+                            <div class="metric-label">Soil Moisture</div>
+                            <div class="metric-value" id="moisture">--</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card metric-card fade-in fade-in-3">
+                    <div class="card-body">
+                        <div class="metric-icon-box humidity">💨</div>
+                        <div>
+                            <div class="metric-label">Humidity</div>
+                            <div class="metric-value" id="humidity">--</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NPK Levels -->
+            <div class="card fade-in fade-in-3" style="margin-bottom: 1.5rem;">
+                <div class="card-header">
+                    <h3>🧪 NPK Levels</h3>
+                </div>
+                <div class="card-content" id="npkSection">
+                    <div class="npk-bar-group">
+                        <div class="npk-bar-header"><span>Nitrogen (N)</span><span id="npkN">--</span></div>
+                        <div class="npk-bar-track"><div class="npk-bar-fill n" id="npkNBar" style="width: 0%"></div></div>
+                    </div>
+                    <div class="npk-bar-group">
+                        <div class="npk-bar-header"><span>Phosphorus (P)</span><span id="npkP">--</span></div>
+                        <div class="npk-bar-track"><div class="npk-bar-fill p" id="npkPBar" style="width: 0%"></div></div>
+                    </div>
+                    <div class="npk-bar-group">
+                        <div class="npk-bar-header"><span>Potassium (K)</span><span id="npkK">--</span></div>
+                        <div class="npk-bar-track"><div class="npk-bar-fill k" id="npkKBar" style="width: 0%"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart -->
+            <div class="card chart-card fade-in fade-in-4">
+                <div class="card-header">
+                    <h3>📈 Sensor Trends (7 Days)</h3>
+                </div>
+                <div class="card-content">
+                    <canvas id="sensorChart" height="140"></canvas>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="card fade-in fade-in-4">
+                <div class="card-header">
+                    <h3>⚡ Controls</h3>
+                </div>
+                <div class="card-content">
+                    <div class="controls-row">
+                        <button class="btn btn-accent" id="waterPumpBtn">💧 Activate Water Pump</button>
+                        <div class="toggle-group">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="autoWaterToggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <div class="toggle-label">
+                                <p>ML Auto-Watering</p>
+                                <small id="autoWaterStatus">Manual control only</small>
+                            </div>
+                            <span class="badge badge-outline" id="autoWaterBadge" style="display: none;">🤖 Active</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2025 GreenSync. All rights reserved.</p>
+    </footer>
+
+    <script src="js/main.js" defer></script>
+    <script src="js/pot-detail.js" defer></script>
+</body>
+</html>

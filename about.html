@@ -3,30 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - GreenSync</title>
+    <title>About - GreenSync</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" type="image/png" href="assets/logo.png">
 </head>
 <body>
-    <div id="main-app">
-        <header></header>
-        <nav class="navbar"></nav>
-        
-        <main class="content-wrapper">
-            <section class="page-section">
-                <h2>About Us</h2>
-                <div class="about-content">
-                    <img src="assets/logo.png" alt="GreenSync Logo" class="about-logo">
-                    <p>
-                        <strong>At GreenSync</strong>, we believe caring for plants should be easy, smart, and sustainable.<br><br>
-                        Our mission is to combine technology with nature, making plant care effortless for everyone.
+    <div class="floating-leaf leaf1"></div>
+    <div class="floating-leaf leaf2"></div>
+    <div class="floating-leaf leaf3"></div>
+    <div class="floating-leaf leaf4"></div>
+    <div class="floating-leaf leaf5"></div>
+    <div class="floating-leaf leaf6"></div>
+
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="my-plants.html" class="header-brand">
+                <div class="brand-icon">🌿</div>
+                <div class="brand-text">
+                    <h1>GreenSync</h1>
+                    <p>Smart Plant Care</p>
+                </div>
+            </a>
+            <button class="mobile-menu-btn" id="menuBtn">☰</button>
+            <nav class="site-nav" id="siteNav"></nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="content-wrapper">
+            <div class="page-header">
+                <h2>About GreenSync</h2>
+                <p>We combine IoT technology with machine learning to make plant care effortless, smart, and sustainable.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="card feature-card fade-in fade-in-1">
+                    <div class="card-body">
+                        <div class="feature-icon">🌱</div>
+                        <h3>Smart Monitoring</h3>
+                        <p>Real-time soil moisture, temperature, humidity, and NPK readings from IoT sensors.</p>
+                    </div>
+                </div>
+                <div class="card feature-card fade-in fade-in-2">
+                    <div class="card-body">
+                        <div class="feature-icon">🔌</div>
+                        <h3>ESP32 Connected</h3>
+                        <p>All sensor data is transmitted wirelessly through ESP32 microcontrollers.</p>
+                    </div>
+                </div>
+                <div class="card feature-card fade-in fade-in-3">
+                    <div class="card-body">
+                        <div class="feature-icon">💧</div>
+                        <h3>Auto Watering</h3>
+                        <p>Control water pumps manually from the dashboard or let the system handle it.</p>
+                    </div>
+                </div>
+                <div class="card feature-card fade-in fade-in-4">
+                    <div class="card-body">
+                        <div class="feature-icon">🧠</div>
+                        <h3>ML Powered</h3>
+                        <p>Our machine learning model predicts when your plants need water and acts automatically.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card fade-in fade-in-4">
+                <div class="card-body" style="text-align: center; padding: 2rem;">
+                    <p style="color: var(--muted-fg); max-width: 700px; margin: 0 auto; line-height: 1.8;">
+                        <strong style="color: var(--fg);">GreenSync</strong> is an IoT-powered self-watering plant system built with
+                        ESP32 microcontrollers, soil moisture sensors, temperature &amp; humidity sensors, and NPK nutrient sensors.
+                        Our ML model analyzes real-time data to automate watering decisions, ensuring your plants always get exactly what they need.
                     </p>
                 </div>
-            </section>
-        </main>
-        
-        <footer></footer>
-    </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2025 GreenSync. All rights reserved.</p>
+    </footer>
+
     <script src="js/main.js" defer></script>
 </body>
 </html>
