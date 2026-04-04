@@ -4,7 +4,7 @@ import { asyncHandler } from "./asyncHandler.js"
 
 const connectDB=asyncHandler(async(req,res,next)=>{
 
-    const connection=await mongoose.connect(`process.env.MONGO_URI/${DB_name}`)
+    const connection=await mongoose.connect(`process.env.LOCAL_DOCKER/${DB_name}`)
     console.log(connection.connection.host)
     next()
 
