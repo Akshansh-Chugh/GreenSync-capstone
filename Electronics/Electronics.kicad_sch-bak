@@ -1,0 +1,1057 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "3b205f38-6e46-4055-9ed5-6168aff3281e")
+	(paper "A4")
+	(title_block
+		(title "SelfWatering agriculture system Capstone cpg 09")
+		(date "2026-03-27")
+		(company "GreenSync")
+	)
+	(lib_symbols
+		(symbol "Device:Battery_Cell"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "BT"
+				(at 2.54 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "Battery_Cell"
+				(at 2.54 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 1.524 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 1.524 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Single-cell battery"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "battery cell"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "Battery_Cell_0_1"
+				(rectangle
+					(start -2.286 1.778)
+					(end 2.286 1.524)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(rectangle
+					(start -1.524 1.016)
+					(end 1.524 0.508)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 1.778) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 0.762) (xy 0 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 3.048) (xy 1.778 3.048)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 3.556) (xy 1.27 2.54)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "Battery_Cell_1_1"
+				(pin passive line
+					(at 0 5.08 270)
+					(length 2.54)
+					(name "+"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -2.54 90)
+					(length 2.54)
+					(name "-"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+	)
+	(junction
+		(at 59.69 54.61)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "0d29336a-4e58-43ce-9a57-4bdf07abcfc9")
+	)
+	(junction
+		(at 59.69 39.37)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "1103f900-19ea-4504-94b1-71f3a3020ee6")
+	)
+	(junction
+		(at 59.69 46.99)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "1e082907-01dc-4f05-9a81-46aa44aa479a")
+	)
+	(junction
+		(at 49.53 54.61)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "212c101b-ab4e-48e1-9b53-121094f2453e")
+	)
+	(junction
+		(at 49.53 39.37)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "236b2fef-8b2c-48a4-a920-9b8ee2f0c5d9")
+	)
+	(junction
+		(at 68.58 46.99)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "b0913752-e18a-465b-ba9f-a4b401e9c4ba")
+	)
+	(junction
+		(at 49.53 46.99)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d2aa1c34-49be-48f6-a3ef-7360cf39aa3a")
+	)
+	(junction
+		(at 39.37 46.99)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d5ade0ed-481a-4f38-8cfb-5011b6cf0131")
+	)
+	(wire
+		(pts
+			(xy 39.37 39.37) (xy 39.37 46.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0dc4bcab-bc48-453a-ae6c-c847a4d78d5b")
+	)
+	(wire
+		(pts
+			(xy 39.37 46.99) (xy 39.37 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1297d30b-f3ab-48de-a717-4e9101c171fe")
+	)
+	(wire
+		(pts
+			(xy 58.42 39.37) (xy 59.69 39.37)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "28496368-2980-4c22-b1dc-472585823c4f")
+	)
+	(wire
+		(pts
+			(xy 68.58 46.99) (xy 68.58 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2d1b8b41-c974-4989-beb2-32af10966bee")
+	)
+	(wire
+		(pts
+			(xy 58.42 54.61) (xy 59.69 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3bda5517-c421-4f20-b5c9-ccec43477841")
+	)
+	(wire
+		(pts
+			(xy 59.69 54.61) (xy 60.96 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4200706b-a5bc-4cf2-8091-10c2509f7c92")
+	)
+	(wire
+		(pts
+			(xy 49.53 46.99) (xy 50.8 46.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5204752b-06b6-43e6-b7e3-aa63468f4422")
+	)
+	(wire
+		(pts
+			(xy 59.69 39.37) (xy 59.69 46.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "576ec027-cd54-4654-a45f-75eaa2e2454f")
+	)
+	(wire
+		(pts
+			(xy 49.53 54.61) (xy 50.8 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "62ba7743-4881-41c0-9669-8f4f32021682")
+	)
+	(wire
+		(pts
+			(xy 59.69 46.99) (xy 59.69 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "634954af-c82f-4613-9725-2bf49f084ea2")
+	)
+	(wire
+		(pts
+			(xy 49.53 39.37) (xy 49.53 46.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6f750b1a-6c3e-46b1-b54d-af49d530a0f1")
+	)
+	(wire
+		(pts
+			(xy 46.99 46.99) (xy 49.53 46.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7ce59ef4-5110-44ef-a4b4-7ac510c8f342")
+	)
+	(wire
+		(pts
+			(xy 59.69 46.99) (xy 60.96 46.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9cc195af-9cbd-4108-bdbc-9ccb096c5124")
+	)
+	(wire
+		(pts
+			(xy 68.58 39.37) (xy 68.58 46.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9d2cced9-175e-43e3-af2d-e8efac899bf1")
+	)
+	(wire
+		(pts
+			(xy 46.99 54.61) (xy 49.53 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cc43e4b1-7948-4cb6-a79b-a556333b4537")
+	)
+	(wire
+		(pts
+			(xy 58.42 46.99) (xy 59.69 46.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d16fd317-9f90-49ca-8b6e-325861d44dc4")
+	)
+	(wire
+		(pts
+			(xy 46.99 39.37) (xy 49.53 39.37)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dedbfd7f-e7db-49b9-84c7-ccf148d6844e")
+	)
+	(wire
+		(pts
+			(xy 49.53 46.99) (xy 49.53 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "def101ac-2b79-456f-8b25-3ef8600c4a66")
+	)
+	(wire
+		(pts
+			(xy 49.53 39.37) (xy 50.8 39.37)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e069419e-daa0-4dc4-92fb-c07768c0088f")
+	)
+	(wire
+		(pts
+			(xy 59.69 39.37) (xy 60.96 39.37)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f689b56f-17da-4540-b731-2a47de312363")
+	)
+	(symbol
+		(lib_id "Device:Battery_Cell")
+		(at 55.88 39.37 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "051d0530-3806-4144-be98-911b2d3f7c51")
+		(property "Reference" "B2"
+			(at 56.896 37.084 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "3.7"
+			(at 54.0385 34.29 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" "Battery:BatteryHolder_MPD_BH-18650-PC"
+			(at 54.356 39.37 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 54.356 39.37 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Single-cell battery"
+			(at 55.88 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "aaa8a424-2163-4d54-acd6-31a716191110")
+		)
+		(pin "1"
+			(uuid "5aad91f6-e43d-4ccf-849b-96edf114a518")
+		)
+		(instances
+			(project "Electronics"
+				(path "/3b205f38-6e46-4055-9ed5-6168aff3281e"
+					(reference "B2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:Battery_Cell")
+		(at 44.45 54.61 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "1844c3ce-f248-4792-93d4-6282da0d5172")
+		(property "Reference" "B7"
+			(at 44.958 53.848 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "3.7"
+			(at 42.6085 49.53 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" "Battery:BatteryHolder_MPD_BH-18650-PC"
+			(at 42.926 54.61 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 42.926 54.61 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Single-cell battery"
+			(at 44.45 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "a00dedcd-f4e7-428e-8573-e28e9042404e")
+		)
+		(pin "1"
+			(uuid "4ad282be-2ce8-4f5d-9d45-2bd81dd40e28")
+		)
+		(instances
+			(project "Electronics"
+				(path "/3b205f38-6e46-4055-9ed5-6168aff3281e"
+					(reference "B7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:Battery_Cell")
+		(at 66.04 39.37 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "22d9259b-4403-4505-bff2-8d46ed2da0c7")
+		(property "Reference" "B3"
+			(at 67.056 37.084 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "3.7"
+			(at 64.1985 34.29 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" "Battery:BatteryHolder_MPD_BH-18650-PC"
+			(at 64.516 39.37 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 64.516 39.37 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Single-cell battery"
+			(at 66.04 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "0e880b54-a1a9-43b3-a46a-270169eae2af")
+		)
+		(pin "1"
+			(uuid "a35b88ec-c63d-493a-bf6f-1741c510138e")
+		)
+		(instances
+			(project "Electronics"
+				(path "/3b205f38-6e46-4055-9ed5-6168aff3281e"
+					(reference "B3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:Battery_Cell")
+		(at 55.88 46.99 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "30e0005d-b055-47bf-abdb-cd977100b6b3")
+		(property "Reference" "B5"
+			(at 56.642 45.72 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "3.7"
+			(at 54.0385 41.91 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" "Battery:BatteryHolder_MPD_BH-18650-PC"
+			(at 54.356 46.99 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 54.356 46.99 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Single-cell battery"
+			(at 55.88 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "05ecb9b5-9bac-4f04-9a93-c8a595a8489b")
+		)
+		(pin "1"
+			(uuid "2f3e8898-9092-49b3-aff6-d2e7395e423e")
+		)
+		(instances
+			(project "Electronics"
+				(path "/3b205f38-6e46-4055-9ed5-6168aff3281e"
+					(reference "B5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:Battery_Cell")
+		(at 44.45 46.99 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "3496400d-3998-4cc1-a5c0-ea9b20df94fb")
+		(property "Reference" "B4"
+			(at 45.212 45.72 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "3.7"
+			(at 42.6085 41.91 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" "Battery:BatteryHolder_MPD_BH-18650-PC"
+			(at 42.926 46.99 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 42.926 46.99 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Single-cell battery"
+			(at 44.45 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "2bee4faf-d210-456a-859e-c6e61dc7dd34")
+		)
+		(pin "1"
+			(uuid "dbdd310c-781f-4443-9e43-8fec26fe544e")
+		)
+		(instances
+			(project "Electronics"
+				(path "/3b205f38-6e46-4055-9ed5-6168aff3281e"
+					(reference "B4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:Battery_Cell")
+		(at 44.45 39.37 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "364d1df1-4f37-48c7-9a07-6a94b95e0ba8")
+		(property "Reference" "B1"
+			(at 45.466 37.084 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "3.7"
+			(at 42.6085 34.29 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" "Battery:BatteryHolder_MPD_BH-18650-PC"
+			(at 42.926 39.37 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 42.926 39.37 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Single-cell battery"
+			(at 44.45 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "7189139b-3b7f-41bc-938a-5d33f16ea9ae")
+		)
+		(pin "1"
+			(uuid "b9553937-fd93-4f0b-84a2-125b26f048ad")
+		)
+		(instances
+			(project ""
+				(path "/3b205f38-6e46-4055-9ed5-6168aff3281e"
+					(reference "B1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:Battery_Cell")
+		(at 66.04 46.99 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a0948fe0-4fa5-4989-a2c9-092a4a77570c")
+		(property "Reference" "B6"
+			(at 66.802 45.72 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "3.7"
+			(at 64.1985 41.91 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" "Battery:BatteryHolder_MPD_BH-18650-PC"
+			(at 64.516 46.99 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 64.516 46.99 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Single-cell battery"
+			(at 66.04 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "b99041ec-3398-401d-8cd3-f8111080036b")
+		)
+		(pin "1"
+			(uuid "df380e1d-5e25-4a34-a0bd-537058c0c5c0")
+		)
+		(instances
+			(project "Electronics"
+				(path "/3b205f38-6e46-4055-9ed5-6168aff3281e"
+					(reference "B6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:Battery_Cell")
+		(at 55.88 54.61 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "c6ffec84-d11c-4765-9a45-ea6093a83046")
+		(property "Reference" "B8"
+			(at 56.388 53.848 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "3.7"
+			(at 54.0385 49.53 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" "Battery:BatteryHolder_MPD_BH-18650-PC"
+			(at 54.356 54.61 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 54.356 54.61 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Single-cell battery"
+			(at 55.88 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "8d9833cc-6a86-4ff9-9620-9a1d8df5cc81")
+		)
+		(pin "1"
+			(uuid "3e684396-23aa-485d-8e82-ae67a370c870")
+		)
+		(instances
+			(project "Electronics"
+				(path "/3b205f38-6e46-4055-9ed5-6168aff3281e"
+					(reference "B8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:Battery_Cell")
+		(at 66.04 54.61 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ce040bab-ee43-481c-bae9-fb97a4d36266")
+		(property "Reference" "B9"
+			(at 66.548 53.848 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "3.7"
+			(at 64.1985 49.53 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" "Battery:BatteryHolder_MPD_BH-18650-PC"
+			(at 64.516 54.61 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 64.516 54.61 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Single-cell battery"
+			(at 66.04 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "200d23e3-80c3-45be-8184-d73e15ff4e72")
+		)
+		(pin "1"
+			(uuid "c147bae5-ef1a-4e00-a9dd-5eaf24e04360")
+		)
+		(instances
+			(project "Electronics"
+				(path "/3b205f38-6e46-4055-9ed5-6168aff3281e"
+					(reference "B9")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)
