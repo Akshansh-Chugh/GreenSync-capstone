@@ -1,8 +1,7 @@
 import connectDB from "./db/index.js"
 import { asyncHandler} from "./utils/asyncHandler.js"
 import app from "./app.js"
-import dotenv from "dotenv"
-dotenv.config()
+
 
 
 asyncHandler(await connectDB()
