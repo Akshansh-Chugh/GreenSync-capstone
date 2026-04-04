@@ -1,3 +1,4 @@
 200, ok
 400, incomplete req
 401 duplicate resource
+402, invalid req

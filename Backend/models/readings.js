@@ -1,6 +1,4 @@
 import mongoose, {Schema, model} from "mongoose"
-import dotenv from "dotenv"
-dotenv.config()
 
 const readings= new Schema({
 
@@ -23,3 +21,5 @@ const readings= new Schema({
     }
 
 },{timestamps:true})
+
+export const reading = mongoose.model("Reading",readings)

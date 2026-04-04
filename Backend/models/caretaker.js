@@ -1,6 +1,4 @@
 import mongoose ,{Schema, model}from "mongoose"
-import dotenv from "dotenv"
-dotenv.config()
 
 const caretakerSchema= new Schema({
 

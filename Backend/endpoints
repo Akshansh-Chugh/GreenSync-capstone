@@ -1,1 +1,2 @@
-/api/v1/create
+(put) /api/v1/create (name , email , phone , password)
+(post) /api/v1/login (email , password)

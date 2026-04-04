@@ -1,6 +1,4 @@
 import mongoose, {Schema, model} from "mongoose"
-import dotenv from "dotenv"
-dotenv.config()
 
 
 const plantSchema= new Schema({
@@ -39,3 +37,5 @@ const plantSchema= new Schema({
     }
 
 },{timestamps:true})
+
+export const plant = mongoose.model("Plant",plantSchema)

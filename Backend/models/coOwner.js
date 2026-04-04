@@ -1,6 +1,4 @@
 import mongoose,{Schema, model} from "mongoose"
-import dotenv from "dotenv"
-dotenv.config()
 
 const coOwnerSchema= new Schema({
 
@@ -21,3 +19,5 @@ const coOwnerSchema= new Schema({
     }
 
 },{timestamps:true})
+
+export const coOwner = mongoose.model("CoOwner",coOwnerSchema)

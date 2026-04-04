@@ -1,8 +1,7 @@
 import mongoose, {Schema, model} from "mongoose"
-import dotenv from "dotenv"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
-dotenv.config()
+
 
 const ownerSchema= new Schema({
     name:{
@@ -40,6 +39,7 @@ const ownerSchema= new Schema({
     },
     profile_pic:{
         type:String,
+        default:"https://res.cloudinary.com/chugh/image/upload/hzlskdlloutmzgg6ihfh.jpg",
         required:false
     },
     refreshToken:{
@@ -51,7 +51,7 @@ const ownerSchema= new Schema({
 
 ownerSchema.pre("save",async function()
 {
-    if (!this.isModified("password")) return next()
+    if (!this.isModified("password")) return 0
     this.password=await bcrypt.hash(this.password,parseInt(process.env.BCRYPT)||10)
 })
 
@@ -68,9 +68,9 @@ ownerSchema.methods.generateAccessToken= function()
         {expiresIn: process.env.ACCESS_TOKEN_EXPIRY}
     )
 }
-ownerSchema.methods.generateRefreshToken= function()
+ownerSchema.methods.generateRefreshToken= async function()
 {
-    return jwt.sign(
+    const token= jwt.sign(
         {
             id:this._id,
             accessToken:this.accessToken
@@ -78,6 +78,9 @@ ownerSchema.methods.generateRefreshToken= function()
         process.env.REFRESH_PWD,
         {expiresIn: process.env.REFRESH_TOKEN_EXPIRY}
     )
+    this.refreshToken=token
+    await this.save()
+    return token
 }
 
 

@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { registerUser } from "./controllers/ownerController.js";
 
 
 const app = express()
@@ -24,6 +23,8 @@ app.use(cookieParser())
 app.use(express.static("public"))
 
 //import routes
-app.post("/api/v1/create",registerUser)
+import ownerRouter from "./routes/ownerRoute.js"
+
+app.use("/api/v1/owner",ownerRouter)
 
 export default app;

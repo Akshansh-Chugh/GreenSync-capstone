@@ -1,6 +1,4 @@
 import mongoose, {Schema, model} from "mongoose"
-import dotenv from "dotenv"
-dotenv.config()
 
 const fertilizerSchema= new Schema({
     
@@ -24,3 +22,5 @@ const fertilizerSchema= new Schema({
     },   
 
 },{timestamps:true})
+
+export const fertilizer = mongoose.model("Fertilizer",fertilizerSchema)
