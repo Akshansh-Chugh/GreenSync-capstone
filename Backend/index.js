@@ -19,3 +19,5 @@ asyncHandler(await connectDB()
     }
 )
 )
+
+app.listen(process.env.PORT, (req,res)=>{})

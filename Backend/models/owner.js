@@ -1,6 +1,7 @@
 import mongoose, {Schema, model} from "mongoose"
 import dotenv from "dotenv"
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
 dotenv.config()
 
 const ownerSchema= new Schema({
@@ -48,11 +49,10 @@ const ownerSchema= new Schema({
 
 },{timestamps:true})
 
-ownerSchema.pre("save",async function(next)
+ownerSchema.pre("save",async function()
 {
     if (!this.isModified("password")) return next()
-    this.password=await bcrypt.hash(this.password,int(process.env.BCRYPT))
-    next()
+    this.password=await bcrypt.hash(this.password,parseInt(process.env.BCRYPT)||10)
 })
 
 ownerSchema.methods.isPwdCorrect= async function(pwd)
