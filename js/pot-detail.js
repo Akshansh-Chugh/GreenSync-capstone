@@ -22,13 +22,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('potName').textContent = pot.name;
     document.getElementById('potIcon').textContent = pot.icon;
 
-    // ===== THINGSPEAK CONFIG =====
-    const channelId = "3326569";
-    const apiKey = "FQ88DHPIYPBM0K5G";
+    // ===== MULTI-CHANNEL CONFIG =====
+    const channels = {
+        1: { id: "3326569", key: "FQ88DHPIYPBM0K5G" },   // Plant 1
+        2: { id: "3326799", key: "WPE2AR31WEIEXDBP" },   // Plant 2
+        3: { id: "3326801", key: "4SV3UULARIGKJWHS" },   // Plant 3
+        4: { id: "3326569", key: "FQ88DHPIYPBM0K5G" }    // Plant 4 (reuse)
+    };
+
+    const selected = channels[potId];
+    const channelId = selected.id;
+    const apiKey = selected.key;
 
     // ===== FETCH LATEST DATA =====
     async function fetchLatestData() {
-        const url = `https://api.thingspeak.com/channels/${3326569}/feeds.json?api_key=${FQ88DHPIYPBM0K5G}&results=1`;
+        const url = `https://api.thingspeak.com/channels/${channelId}/feeds.json?api_key=${apiKey}&results=1`;
 
         try {
             const res = await fetch(url);
@@ -52,7 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // ===== FETCH CHART DATA =====
     async function fetchChartData() {
-        const url = `https://api.thingspeak.com/channels/${3326569}/feeds.json?api_key=${FQ88DHPIYPBM0K5G}&results=1`;
+        const url = `https://api.thingspeak.com/channels/${channelId}/feeds.json?api_key=${apiKey}&results=7`;
 
         try {
             const res = await fetch(url);
