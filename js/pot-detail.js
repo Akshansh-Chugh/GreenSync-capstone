@@ -1,11 +1,15 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+
+    // ===== AUTH CHECK =====
     if (sessionStorage.getItem('loggedIn') !== 'true') {
         window.location.href = 'login.html';
         return;
     }
 
+    // ===== GET POT FROM URL =====
     const params = new URLSearchParams(window.location.search);
     const potId = parseInt(params.get('id'));
+
     const potsData = JSON.parse(sessionStorage.getItem('potsData'));
     const pot = potsData ? potsData.find(p => p.id === potId) : null;
 
@@ -14,26 +18,138 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // Populate header
+    // ===== HEADER =====
     document.getElementById('potName').textContent = pot.name;
     document.getElementById('potIcon').textContent = pot.icon;
 
-    // Populate metrics
-    document.getElementById('temp').textContent = pot.temp + '°C';
-    document.getElementById('moisture').textContent = pot.moisture + '%';
-    document.getElementById('humidity').textContent = pot.humidity + '%';
+    // ===== THINGSPEAK CONFIG =====
+    const channelId = "3326569";
+    const apiKey = "FQ88DHPIYPBM0K5G";
 
-    // Populate NPK bars
-    document.getElementById('npkN').textContent = pot.nitrogen + '%';
-    document.getElementById('npkP').textContent = pot.phosphorus + '%';
-    document.getElementById('npkK').textContent = pot.potassium + '%';
-    setTimeout(() => {
-        document.getElementById('npkNBar').style.width = pot.nitrogen + '%';
-        document.getElementById('npkPBar').style.width = pot.phosphorus + '%';
-        document.getElementById('npkKBar').style.width = pot.potassium + '%';
-    }, 100);
+    // ===== FETCH LATEST DATA =====
+    async function fetchLatestData() {
+        const url = `https://api.thingspeak.com/channels/${3326569}/feeds.json?api_key=${FQ88DHPIYPBM0K5G}&results=1`;
 
-    // Auto-water toggle
+        try {
+            const res = await fetch(url);
+            const data = await res.json();
+            const feed = data.feeds[0];
+
+            return {
+                temp: feed.field1 || '--',
+                moisture: feed.field2 || '--',
+                humidity: feed.field3 || '--',
+                nitrogen: feed.field4 || 0,
+                phosphorus: feed.field5 || 0,
+                potassium: feed.field6 || 0
+            };
+
+        } catch (err) {
+            console.error("ThingSpeak Error:", err);
+            return null;
+        }
+    }
+
+    // ===== FETCH CHART DATA =====
+    async function fetchChartData() {
+        const url = `https://api.thingspeak.com/channels/${3326569}/feeds.json?api_key=${FQ88DHPIYPBM0K5G}&results=1`;
+
+        try {
+            const res = await fetch(url);
+            const data = await res.json();
+
+            return {
+                labels: data.feeds.map(f =>
+                    new Date(f.created_at).toLocaleDateString()
+                ),
+                moisture: data.feeds.map(f => f.field2),
+                temp: data.feeds.map(f => f.field1),
+                humidity: data.feeds.map(f => f.field3)
+            };
+
+        } catch (err) {
+            console.error("Chart fetch error:", err);
+            return null;
+        }
+    }
+
+    // ===== UPDATE UI =====
+    async function updateUI() {
+        const data = await fetchLatestData();
+        if (!data) return;
+
+        document.getElementById('temp').textContent = data.temp + '°C';
+        document.getElementById('moisture').textContent = data.moisture + '%';
+        document.getElementById('humidity').textContent = data.humidity + '%';
+
+        document.getElementById('npkN').textContent = data.nitrogen + '%';
+        document.getElementById('npkP').textContent = data.phosphorus + '%';
+        document.getElementById('npkK').textContent = data.potassium + '%';
+
+        document.getElementById('npkNBar').style.width = data.nitrogen + '%';
+        document.getElementById('npkPBar').style.width = data.phosphorus + '%';
+        document.getElementById('npkKBar').style.width = data.potassium + '%';
+    }
+
+    // ===== CHART SETUP =====
+    let chart;
+
+    async function initChart() {
+        const chartData = await fetchChartData();
+        if (!chartData) return;
+
+        const ctx = document.getElementById('sensorChart').getContext('2d');
+
+        chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: chartData.labels,
+                datasets: [
+                    {
+                        label: 'Moisture (%)',
+                        data: chartData.moisture,
+                        borderColor: 'hsl(200, 80%, 50%)',
+                        backgroundColor: 'hsla(200, 80%, 50%, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Temperature (°C)',
+                        data: chartData.temp,
+                        borderColor: 'hsl(15, 90%, 55%)',
+                        backgroundColor: 'hsla(15, 90%, 55%, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Humidity (%)',
+                        data: chartData.humidity,
+                        borderColor: 'hsl(270, 60%, 55%)',
+                        backgroundColor: 'hsla(270, 60%, 55%, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true
+            }
+        });
+    }
+
+    async function updateChart() {
+        const chartData = await fetchChartData();
+        if (!chartData || !chart) return;
+
+        chart.data.labels = chartData.labels;
+        chart.data.datasets[0].data = chartData.moisture;
+        chart.data.datasets[1].data = chartData.temp;
+        chart.data.datasets[2].data = chartData.humidity;
+
+        chart.update();
+    }
+
+    // ===== AUTO WATER TOGGLE =====
     const toggle = document.getElementById('autoWaterToggle');
     const statusText = document.getElementById('autoWaterStatus');
     const badge = document.getElementById('autoWaterBadge');
@@ -53,68 +169,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Water pump button
+    // ===== WATER PUMP BUTTON =====
     const pumpBtn = document.getElementById('waterPumpBtn');
     pumpBtn.addEventListener('click', () => {
         pumpBtn.disabled = true;
         pumpBtn.textContent = '💧 Pumping...';
+
         showToast(`Water pump for '${pot.name}' activated!`);
+
         setTimeout(() => {
             pumpBtn.disabled = false;
             pumpBtn.textContent = '💧 Activate Water Pump';
         }, 3000);
     });
 
-    // Chart
-    const ctx = document.getElementById('sensorChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: pot.chartLabels,
-            datasets: [
-                {
-                    label: 'Moisture (%)',
-                    data: pot.chartMoisture,
-                    borderColor: 'hsl(200, 80%, 50%)',
-                    backgroundColor: 'hsla(200, 80%, 50%, 0.1)',
-                    fill: true,
-                    tension: 0.3,
-                    borderWidth: 2,
-                    pointRadius: 3
-                },
-                {
-                    label: 'Temperature (°C)',
-                    data: pot.chartTemp,
-                    borderColor: 'hsl(15, 90%, 55%)',
-                    backgroundColor: 'hsla(15, 90%, 55%, 0.1)',
-                    fill: true,
-                    tension: 0.3,
-                    borderWidth: 2,
-                    pointRadius: 3
-                },
-                {
-                    label: 'Humidity (%)',
-                    data: pot.chartHumidity,
-                    borderColor: 'hsl(270, 60%, 55%)',
-                    backgroundColor: 'hsla(270, 60%, 55%, 0.1)',
-                    fill: true,
-                    tension: 0.3,
-                    borderWidth: 2,
-                    pointRadius: 3
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    labels: { font: { family: "'DM Sans', sans-serif", size: 12 } }
-                }
-            },
-            scales: {
-                x: { grid: { color: 'hsl(140, 15%, 92%)' }, ticks: { font: { size: 11 } } },
-                y: { grid: { color: 'hsl(140, 15%, 92%)' }, ticks: { font: { size: 11 } } }
-            }
-        }
-    });
+    // ===== INITIAL LOAD =====
+    await updateUI();
+    await initChart();
+
+    // ===== AUTO REFRESH =====
+    setInterval(() => {
+        updateUI();
+        updateChart();
+    }, 5000);
+
 });
