@@ -22,13 +22,26 @@
 
             <form id="loginForm">
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" class="form-input" placeholder="you@example.com" required>
+                    <label>Email</label>
+                    <input type="email" id="email" class="form-input" required>
                 </div>
+
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+                    <label>Password</label>
+                    <input type="password" id="password" class="form-input" required>
                 </div>
+
+                <!-- ✅ NEW ROLE FIELD -->
+                <div class="form-group">
+                    <label for="role">Role</label>
+                    <select id="role" class="form-input" required>
+                        <option value="">Select Role</option>
+                        <option value="owner">Owner</option>
+                        <option value="co-owner">Co-owner</option>
+                        <option value="caretaker">Caretaker</option>
+                    </select>
+                </div>
+
                 <button type="submit" class="btn btn-primary">Login</button>
             </form>
 

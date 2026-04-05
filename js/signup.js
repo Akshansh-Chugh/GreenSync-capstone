@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('signupForm');
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const password = document.getElementById('password').value;
@@ -12,20 +12,33 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Redirect to login after signup
-        showToast('Account created! Redirecting to login...');
-        setTimeout(() => {
-            window.location.href = 'login.html';
-        }, 1500);
+        const data = {
+            name: document.getElementById('fullname').value,
+            email: document.getElementById('email').value,
+            password: password,
+            role: document.getElementById('role').value
+        };
+
+        try {
+            const res = await fetch('http://localhost:5000/api/auth/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await res.json();
+
+            if (res.ok) {
+                showToast('Account created! Redirecting...');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1500);
+            } else {
+                showToast(result.message || 'Signup failed');
+            }
+
+        } catch (err) {
+            showToast('Server error');
+        }
     });
 });
-
-function showToast(message) {
-    const existing = document.querySelector('.toast');
-    if (existing) existing.remove();
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.textContent = message;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 3000);
-}
