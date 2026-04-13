@@ -31,7 +31,12 @@ const plantSchema= new Schema({
     },
     directCaretakerControl:{
         type:Boolean,
+        default:false,
         required:false
+    },
+    espMac:{
+        type:String,
+        required:true
     }
 
 },{timestamps:true})

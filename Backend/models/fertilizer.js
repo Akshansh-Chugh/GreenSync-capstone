@@ -2,11 +2,6 @@ import mongoose, {Schema, model} from "mongoose"
 
 const fertilizerSchema= new Schema({
     
-    owner:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"owner",
-        required:true
-    },
     name:{
         type:String,
         required:true

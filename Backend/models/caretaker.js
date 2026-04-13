@@ -1,4 +1,4 @@
-import mongoose ,{Schema, model}from "mongoose"
+import mongoose ,{Schema}from "mongoose"
 
 const caretakerSchema= new Schema({
 
@@ -30,12 +30,14 @@ const caretakerSchema= new Schema({
         type:String,
         required:true
     },
-    plants:
-    {
-        type:[mongoose.Schema.Types.ObjectId],
-        ref:"plant",
-        required:true
+    refreshToken:{
+        type: String
+    },
+    profilePic:{
+        type: String,
+        default:"https://res.cloudinary.com/chugh/image/upload/hzlskdlloutmzgg6ihfh.jpg"
     }
+
 
 },{
     timestamps:true

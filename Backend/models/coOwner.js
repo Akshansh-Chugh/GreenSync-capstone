@@ -1,20 +1,15 @@
-import mongoose,{Schema, model} from "mongoose"
+import mongoose,{Schema} from "mongoose"
 
 const coOwnerSchema= new Schema({
 
-    owner1:{
+    owner:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"owner",
+        ref:"Owners",
         required:true
     },
-    owner2:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"owner",
-        required:false
-    },
-    plants:{
+    plant:{
         type:[mongoose.Schema.Types.ObjectId],
-        ref:"plant",
+        ref:"Plants",
         required:true
     }
 

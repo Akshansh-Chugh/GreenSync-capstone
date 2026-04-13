@@ -28,10 +28,6 @@ const ownerSchema= new Schema({
         type:String,
         required:false
     },
-    plants:{
-        type:[mongoose.Schema.Types.ObjectId],
-        ref:"plant",
-        required:false},
 
     totalFeilds:{
         type:Number,

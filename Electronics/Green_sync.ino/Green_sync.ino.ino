@@ -4,7 +4,7 @@
 #include <LiquidCrystal_I2C.h>
 
 // --- Configuration ---
-const char* serverName = "https://data.mongodb-api.com/app/YOUR_APP_ID/endpoint/data/v1/action/insertOne";
+const char* serverName = "AkshanshPc.local:3000/api/v1/readings";
 const char* apiKey = "YOUR_MONGODB_API_KEY";
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
@@ -92,6 +92,7 @@ int plants_data[3][3] = {
   {33, 27, 34}, // p2
   {25, 18, 35}  // p3
 };
+string *plant_id[3]={"69d1180b50baa8398e7f041b","69d1184850baa8398e7f041e","69d1185b50baa8398e7f0421"}
 
 Plant* head = NULL;
 

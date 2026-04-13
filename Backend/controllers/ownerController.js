@@ -13,16 +13,8 @@ const cookieSettings=
 
 const registerUser=asyncHandler(async(req,res)=>
 {
-    
-
     let {name,email,phone,password,age,adhaar,totalFeilds, profile_pic}=req.body;
-    
-
     if (!name || !email || !phone || !password) throw new apiError(400, "All fields are required")
-
-    // store email as lowercase to avoid duplication
-    email=email.toLowerCase().trim()
-
     if (req.files?.profile_pic?.[0]?.path)
     {
         let local_path=req.files.profile_pic[0].path
@@ -71,4 +63,18 @@ const loginUser=asyncHandler(async(req,res)=>
     .json( new apiResponse(200,currentUser))
 })
 
-export {registerUser,loginUser}
+const updateDetails=asyncHandler(async(req,res)=>
+{
+    //
+})
+
+export {registerUser,
+    loginUser,                // input(email pwd), verify user exsist, correct pwd , tokens, send cokki , success
+    updateDetails,            // auth , input, not email , not pwd , not profile, not phone, change in db ,verify, success
+    deleteOwner,              // auth , verify pwd , not only owner , del (owner , co owner , notification) table, remove cookie , success
+    logout,                   // auth, del cookie , del refresh token ,success
+    changePwd,                // auth, verify pwd , db.save, success
+    changeProfilePic,         // auth , new pic , upload , remove old from (cloud,local), db.save, success 
+    addCaretaker,             // auth , my plants , input, cr exsists, notify cr, update plant.direct , new customer entry, success
+    removeCaretaker           // auth , my plants, cr accepted, del customer entry , notify cr , success 
+}
