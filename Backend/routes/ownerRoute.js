@@ -1,7 +1,7 @@
 import {Router} from "express"
 import { upload } from "../middleware/multerMiddleware.js";
 import { registerUser , loginUser } from "../controllers/ownerController.js"
-import Check_required_fields from "../check/ownerCheck.js"
+import Check_required_fields from "../checks/ownerCheck.js"
 
 const router= Router()
 

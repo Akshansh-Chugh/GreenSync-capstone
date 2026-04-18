@@ -1,6 +1,7 @@
 // check email , phone , name , adhaar, totalFeilds, profile_pic
-import {isEmail, isAlpha} from "validator"
-import { apiError } from "../utils/apiError"
+import isEmail from 'validator';
+import isAlpha from 'validator' 
+import { apiError } from "../utils/apiError.js"
 import { parsePhoneNumberWithError } from 'libphonenumber-js';
 
 //fetch details

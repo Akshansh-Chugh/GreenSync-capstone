@@ -71,10 +71,10 @@ const updateDetails=asyncHandler(async(req,res)=>
 export {registerUser,
     loginUser,                // input(email pwd), verify user exsist, correct pwd , tokens, send cokki , success
     updateDetails,            // auth , input, not email , not pwd , not profile, not phone, change in db ,verify, success
-    deleteOwner,              // auth , verify pwd , not only owner , del (owner , co owner , notification) table, remove cookie , success
-    logout,                   // auth, del cookie , del refresh token ,success
-    changePwd,                // auth, verify pwd , db.save, success
-    changeProfilePic,         // auth , new pic , upload , remove old from (cloud,local), db.save, success 
-    addCaretaker,             // auth , my plants , input, cr exsists, notify cr, update plant.direct , new customer entry, success
-    removeCaretaker           // auth , my plants, cr accepted, del customer entry , notify cr , success 
+    // deleteOwner,              // auth , verify pwd , not only owner , del (owner , co owner , notification) table, remove cookie , success
+    // logout,                   // auth, del cookie , del refresh token ,success
+    // changePwd,                // auth, verify pwd , db.save, success
+    // changeProfilePic,         // auth , new pic , upload , remove old from (cloud,local), db.save, success 
+    // addCaretaker,             // auth , my plants , input, cr exsists, notify cr, update plant.direct , new customer entry, success
+    // removeCaretaker           // auth , my plants, cr accepted, del customer entry , notify cr , success 
 }

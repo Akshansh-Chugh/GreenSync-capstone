@@ -49,8 +49,8 @@ const createPlant = asyncHandler(async (req, res) => {
 export default createPlant;
 export {
     createPlant,  //auth(owner) ,input , validate , add to plant table , add to co owner table
-    deletePlant,  // auth(owner), verify pwd , my plants , del (plant , customer , co owner , fertiliser , reading) ,notify (cr , co owner) 
-    updatePlant,  //auth(owner) , my plants , not (water, esp mac , image) ,update plant table ,success 
-    activateWater,//auth , my plants or (customer and direct cc) , try on esp (do not send success as esp might take hours to water)
-    water_eq    // cors , success
+    // deletePlant,  // auth(owner), verify pwd , my plants , del (plant , customer , co owner , fertiliser , reading) ,notify (cr , co owner) 
+    // updatePlant,  //auth(owner) , my plants , not (water, esp mac , image) ,update plant table ,success 
+    // activateWater,//auth , my plants or (customer and direct cc) , try on esp (do not send success as esp might take hours to water)
+    // water_eq    // cors , success
 }
