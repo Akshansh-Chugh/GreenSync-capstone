@@ -1,0 +1,80 @@
+services:
+  db1:
+    image: mongo:latest
+    container_name: db1
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    ports:
+      - "27017:27017"
+    volumes:
+      - ${MONGO_ROOT}/db1:/data/db
+
+  db2:
+    image: mongo:latest
+    container_name: db2
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    ports:
+      - "27018:27017"
+    volumes:
+      - ${MONGO_ROOT}/db2:/data/db
+
+  db3:
+    image: mongo:latest
+    container_name: db3
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    ports:
+      - "27019:27017"
+    volumes:
+      - ${MONGO_ROOT}/db3:/data/db
+
+  db4:
+    image: mongo:latest
+    container_name: db4
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    ports:
+      - "27020:27017"
+    volumes:
+      - ${MONGO_ROOT}/db4:/data/db
+
+  db5:
+    image: mongo:latest
+    container_name: db5
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    ports:
+      - "27021:27017"
+    volumes:
+      - ${MONGO_ROOT}/db5:/data/db
+
+  # This service waits for db1 to be ready, then initializes the replica set
+  mongo-init:
+    image: mongo:latest
+    container_name: mongo-init
+    depends_on:
+      - db1
+      - db2
+      - db3
+      - db4
+      - db5
+    entrypoint: >
+      bash -c "
+      until mongosh --host db1:27017 --eval 'db.runCommand({ping:1})' &>/dev/null; do
+        echo 'Waiting for MongoDB nodes to be ready...'
+        sleep 2
+      done;
+      echo 'Initializing 5-node Replica Set...';
+      mongosh --host db1:27017 --eval \"
+        rs.initiate({
+          _id: 'rs0',
+          members: [
+            { _id: 0, host: 'db1:27017' },
+            { _id: 1, host: 'db2:27017' },
+            { _id: 2, host: 'db3:27017' },
+            { _id: 3, host: 'db4:27017' },
+            { _id: 4, host: 'db5:27017' }
+          ]
+        })
+      \"
+      "
+
+networks:
+  default:
+    name: mongo-net

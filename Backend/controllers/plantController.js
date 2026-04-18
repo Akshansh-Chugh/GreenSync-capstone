@@ -5,10 +5,10 @@ import {plant} from "../models/plant.js"
 import {owner} from "../models/owner.js"
 
 const createPlant = asyncHandler(async (req, res) => {
-    const { Owner, type, name, season, water, location, area, directCaretakerControl } = req.body;
+    const { Owner, type, name, season, water, location, area, directCaretakerControl,espMac } = req.body;
 
     // 1. Validation
-    if ([Owner, type, name, season, water, location, area, directCaretakerControl].some(field => !field)) {
+    if ([Owner, type, name, season, water, location, area, directCaretakerControl,espMac].some(field => !field)) {
         throw new apiError(400, "All fields are required");
     }
 
@@ -25,7 +25,6 @@ const createPlant = asyncHandler(async (req, res) => {
 
     // 4. Create the Plant
     const newPlant = await plant.create({
-        _id: customPlantId,
         owner: ownerDoc._id,
         type,
         name,
@@ -33,7 +32,8 @@ const createPlant = asyncHandler(async (req, res) => {
         water,
         location,
         area,
-        directCaretakerControl
+        directCaretakerControl,
+        espMac  // stores plant number as well {espMac}{Plant number(1-5)}
     });
 
     // update total feild for owner
@@ -48,8 +48,8 @@ const createPlant = asyncHandler(async (req, res) => {
 
 export default createPlant;
 export {
-    createPlant,  //auth(owner) ,input , validate , add to plant table , add to co owner table
-    // deletePlant,  // auth(owner), verify pwd , my plants , del (plant , customer , co owner , fertiliser , reading) ,notify (cr , co owner) 
+    createPlant,  //auth(owner) ,input , validate , add to plant table ,inc owner.noOfPlants, add to co owner table
+    // deletePlant,  // auth(owner), verify pwd , my plants , del (plant , customer , co owner , fertiliser , reading) ,decrement owner.noOfPlants,notify (cr , co owner) 
     // updatePlant,  //auth(owner) , my plants , not (water, esp mac , image) ,update plant table ,success 
     // activateWater,//auth , my plants or (customer and direct cc) , try on esp (do not send success as esp might take hours to water)
     // water_eq    // cors , success
