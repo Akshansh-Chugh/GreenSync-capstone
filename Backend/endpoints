@@ -1,5 +1,6 @@
 (put) /api/v1/owner/create (name , email , phone , password)
 (post) /api/v1/owner/login (email , password)
+(post) /api/v1/owner/update (name , email , phone , age , adhaar)
 
 (post) /api/v1/plant/create (type ,name, season , water, location , area, directCaretakerControl)
 (post) /api/v1/plant/readings (temp , humidity, soilMoisture, n , p ,k , plant1)

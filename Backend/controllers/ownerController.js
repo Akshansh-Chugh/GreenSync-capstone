@@ -65,7 +65,29 @@ const loginUser=asyncHandler(async(req,res)=>
 
 const updateDetails=asyncHandler(async(req,res)=>
 {
-    //
+    //inputs
+    const {
+    name = req.user?.name,
+    email = req.user?.email,
+    phone = req.user?.phone,
+    age = req.user?.age,
+    adhaar = req.user?.adhaar
+    } = req.body
+    //update
+    const updatedUser = await owner.findByIdAndUpdate(
+        req.user._id,
+        {name,email,phone,age,adhaar},
+        { returnDocument: "after",runValidators: true}
+    )
+
+    //respond
+    if(updatedUser) res.status(200).json(new apiResponse(200,`Updated data to ${updatedUser}`))
+    else throw new apiError(500, `${req.user}`)
+})
+
+const deleteOwner= asyncHandler(async (req,res)=>
+{
+
 })
 
 export {registerUser,

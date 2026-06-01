@@ -10,11 +10,13 @@ const ownerSchema= new Schema({
     },
     email:{
         type:String,
-        required:true
+        required:true,
+        unique: true
     },
     phone:{
         type:String,
-        required:true
+        required:true,
+        unique:true
     },
     password:{
         type:String,
@@ -26,7 +28,8 @@ const ownerSchema= new Schema({
     },
     adhaar:{
         type:String,
-        required:false
+        sparse:true,
+        unique:true
     },
 
     totalFeilds:{
@@ -59,7 +62,7 @@ ownerSchema.methods.isPwdCorrect= async function(pwd)
 ownerSchema.methods.generateAccessToken= function()
 {
     return jwt.sign(
-        {id:this._id},
+        {_id:this._id},
         process.env.ACCESS_PWD,
         {expiresIn: process.env.ACCESS_TOKEN_EXPIRY}
     )
@@ -68,7 +71,7 @@ ownerSchema.methods.generateRefreshToken= async function()
 {
     const token= jwt.sign(
         {
-            id:this._id,
+            _id:this._id,
             accessToken:this.accessToken
         },
         process.env.REFRESH_PWD,
