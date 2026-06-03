@@ -42,23 +42,34 @@ const to_cloud=async(file)=>
     }
 }
 
-const cloud_del= (async (url)=>
-{
-    try
-    {
-        if(!url) 
-            { 
-                console.log("No file")
-                return null
-            }
-        const response=await cloudinary.uploader.destroy(url)
-        if (response.result!=="ok") throw new apiError(500,"delete failed")
-        return response
+const cloud_del = async (url) => {
+    if (!url) return null;
+
+    try {
+        const publicId = url
+            .split("/upload/")[1]
+            ?.replace(/^v\d+\//, "")
+            ?.replace(/\.[^/.]+$/, "");
+
+        if (!publicId) {
+            throw new apiError(400, "Invalid Cloudinary URL");
+        }
+
+        const response = await cloudinary.uploader.destroy(publicId);
+
+        if (
+            response.result !== "ok" &&
+            response.result !== "not found"
+        ) {
+            throw new apiError(500, "Delete failed");
+        }
+
+        return response;
+
+    } catch (err) {
+        console.error("Cloudinary delete error:", err);
+        throw err;
     }
-    catch(err)
-    {
-        console.log(err)
-    }
-})
+};
 
 export {to_cloud,cloud_del}
