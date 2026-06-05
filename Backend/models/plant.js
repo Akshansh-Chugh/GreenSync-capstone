@@ -37,6 +37,11 @@ const plantSchema= new Schema({
     espMac:{
         type:String,
         required:true
+    },
+    plant_pic:
+    {
+        type:String,
+        default:"https://res.cloudinary.com/chugh/image/upload/v1780674139/grapes_np2tom.jpg"
     }
 
 },{timestamps:true})

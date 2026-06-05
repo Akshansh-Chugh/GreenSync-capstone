@@ -3,9 +3,11 @@ import { apiResponse } from "../utils/apiResponse.js";
 import { apiError } from "../utils/apiError.js";
 import {plant} from "../models/plant.js"
 import {owner} from "../models/owner.js"
+import {coOwner} from "../models/coOwner.js"
 
 const createPlant = asyncHandler(async (req, res) => {
-    const { Owner, type, name, season, water, location, area, directCaretakerControl,espMac } = req.body;
+    let {type, name, season, water, location, area, directCaretakerControl,espMac,plant_pic} = req.body;
+    const Owner=req.user?._id
 
     // 1. Validation
     if ([Owner, type, name, season, water, location, area, directCaretakerControl,espMac].some(field => !field)) {
@@ -19,13 +21,19 @@ const createPlant = asyncHandler(async (req, res) => {
         throw new apiError(404, "Owner not found");
     }
 
+    if (req.files?.[0]?.plant_pic)
+    {
+        let local_path=req.files.profile_pic[0].path
+        plant_pic=await to_cloud(local_path)
+    }
+
     // 3. Generate the Custom ID
     // Using ownerDoc.totalFeilds (matches your typo in the schema)
     const customPlantId = `${Owner}${(ownerDoc.totalFeilds || 0) + 1}`;
 
     // 4. Create the Plant
     const newPlant = await plant.create({
-        owner: ownerDoc._id,
+        plant_pic,
         type,
         name,
         season,
@@ -34,7 +42,19 @@ const createPlant = asyncHandler(async (req, res) => {
         area,
         directCaretakerControl,
         espMac  // stores plant number as well {espMac}{Plant number(1-5)}
-    });
+    },
+    // {returnDocument:'after'}
+);
+
+
+    const newCoOwner = await coOwner.create(
+        {
+            owner:Owner,
+            plant:newPlant._id
+        },
+    )
+
+    if(!newPlant || !newCoOwner) throw new apiError(500, "Something went Wront")
 
     // update total feild for owner
     await owner.findByIdAndUpdate(ownerDoc._id, {
@@ -42,7 +62,7 @@ const createPlant = asyncHandler(async (req, res) => {
     });
 
     return res.status(201).json(
-        new apiResponse(201, newPlant, "Plant created successfully")
+        new apiResponse(201, [newPlant, newCoOwner], "Plant created successfully")
     );
 });
 

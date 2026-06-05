@@ -26,9 +26,11 @@ app.use(express.static("public"))
 import ownerRouter from "./routes/ownerRoute.js"
 // import sensorRoute from "./routes/sensorRoute.js"
 import createPlant from "./routes/plantRoute.js"
+import caretakerRouter  from "./routes/caretakerRoute.js";
 
 app.use("/api/v1/owner",ownerRouter)
 app.use("/api/v1/plant",createPlant)
+app.use("/api/v1/caretaker",caretakerRouter)
 // app.use("/api/v1/plant",sensorRoute)
 
 export default app;

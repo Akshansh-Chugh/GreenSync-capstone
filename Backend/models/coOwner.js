@@ -8,7 +8,7 @@ const coOwnerSchema= new Schema({
         required:true
     },
     plant:{
-        type:[mongoose.Schema.Types.ObjectId],
+        type:mongoose.Schema.Types.ObjectId,
         ref:"Plants",
         required:true
     }

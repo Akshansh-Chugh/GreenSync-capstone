@@ -3,7 +3,8 @@ import {apiResponse} from "../utils/apiResponse.js";
 import { apiError } from "../utils/apiError.js";
 import {owner} from "../models/owner.js";
 import { to_cloud ,cloud_del} from "../utils/cloudinary.js"
-import jwt from "jsonwebtoken";
+import jwt, { decode } from "jsonwebtoken";
+import { caretaker } from "../models/caretaker.js";
 
 
 const cookieSettings=
@@ -16,34 +17,39 @@ const registerUser=asyncHandler(async(req,res)=>
 {
     let {name,email,phone,password,age,adhaar,totalFeilds, profile_pic}=req.body;
     if (!name || !email || !phone || !password) throw new apiError(400, "All fields are required")
-    if (req.files?.profile_pic?.[0]?.path)
-    {
-        let local_path=req.files.profile_pic[0].path
-        profile_pic=await to_cloud(local_path)
-    }
 
     const exsistingUser=await owner.findOne({
         $or:[{email},{phone}]
     })
 
     if (exsistingUser) throw new apiError(401,"User already exists")
+    if (req.files?.profile_pic?.[0]?.path)
+    {
+        let local_path=req.files.profile_pic[0].path
+        profile_pic=await to_cloud(local_path)
+    }
     
     let newUser=await owner.create({name,email,phone,password,age,adhaar,totalFeilds, profile_pic})
 
     const accessToken=newUser.generateAccessToken()
+    const refreshToken= await newUser.generateRefreshToken()
     const createdUser= await owner.findByIdAndUpdate(newUser._id,                     // only updates db (local variable is untouched)
-        {refreshToken: await newUser.generateRefreshToken()},
-        {new:true}                                                          // new is to update local variable too
-    ).select("-password")
+        {refreshToken: refreshToken},
+        {returnDocument:'after'}                                                          // new is to update local variable too
+    ).select("-password -refreshToken -__v")
 
     if (!createdUser) throw new apiError(500,"User creation failed")
 
-    if (password === "pwd")  await owner.deleteOne({ _id: newUser._id });
+    if (password === "pwd" || !accessToken ||!refreshToken)  
+        {
+            await owner.deleteOne({ _id: newUser._id });
+        }
     
 
     return res.status(200)
     .cookie("accessToken",accessToken,cookieSettings)
-    .json(new apiResponse(200,createdUser,"User created Successfully"))
+    .cookie("refreshToken",refreshToken,cookieSettings)
+    .json(new apiResponse(200,"User created Successfully"))
 
 })
 
@@ -51,17 +57,17 @@ const loginUser=asyncHandler(async(req,res)=>
 {
     let {email,password}=req.body
     if (!email || !password) throw new apiError(400,"All fields are required")
-    const currentUser= await owner.findOne({email})
+    const currentUser= await owner.findOne({email:email}).select("-__v -refreshtoken -createdAt")
     if (!currentUser) throw new apiError(401,"User not found")
     const valid = await currentUser.isPwdCorrect(password);
     if (!valid) throw new apiError(403,"Invalid credentials")
-
+    
     const accessToken=await currentUser.generateAccessToken()
     const refreshToken=await currentUser.generateRefreshToken()
 
     res.cookie("accessToken",accessToken,cookieSettings)
     .cookie("refreshToken",refreshToken,cookieSettings)
-    .json( new apiResponse(200,currentUser))
+    .json( new apiResponse(200, {name:currentUser.name,email:currentUser.email,phone:currentUser.phone,profile_pic:currentUser.profile_pic}))
 })
 
 const updateDetails=asyncHandler(async(req,res)=>
@@ -82,7 +88,9 @@ const updateDetails=asyncHandler(async(req,res)=>
     )
 
     //respond
-    if(updatedUser) res.status(200).json(new apiResponse(200,`Updated data to ${updatedUser}`))
+    if(updatedUser) 
+        res.status(200)
+        .json(new apiResponse(200,{"name":updatedUser.name, "email":updatedUser.email, "phone":updatedUser.phone, "age":updatedUser.age,"adhaar":updatedUser.adhaar}))
     else throw new apiError(500, `${req.user}`)
 })
 
@@ -111,7 +119,6 @@ const changePwd= asyncHandler(async (req,res)=>
 const changeProfilePic = asyncHandler(async (req, res) => {
 
     const newPic = req.files?.profile_pic?.[0]?.path
-    console.log(req.files)
 
     if (!newPic) 
         throw new apiError(400, "Please provide a profile picture")
@@ -166,6 +173,20 @@ const deleteOwner= asyncHandler(async(req,res)=>
 {
 
 })
+const getAccess=asyncHandler(async(req,res)=>
+{
+    // console.log(req)
+    const cookie = req.cookies?.refreshToken
+    if(!cookie) throw new apiError(405,"No refresh token")
+    let decoded
+    try {decoded = jwt.verify(cookie, process.env.REFRESH_PWD);}
+    catch (err) {throw new apiError(406, err,err);}
+    const user= await owner.findById(decoded?._id)
+    if(cookie == user.refreshToken) 
+        res.status(200)
+            .cookie("accessToken",await user.generateAccessToken,cookieSettings)
+            .json(new apiResponse(200,"Sucess"))
+})
 
 export {registerUser,
     loginUser,                // input(email pwd), verify user exsist, correct pwd , tokens, send cokki , success
@@ -176,4 +197,5 @@ export {registerUser,
     changeProfilePic,         // auth , new pic , upload , remove old from (cloud,local), db.save, success 
     // addCaretaker,          // auth , my plants , input, cr exsists, notify cr, update plant.direct , new customer entry, success
     // removeCaretaker        // auth , my plants, cr accepted, del customer entry , notify cr , success 
+    getAccess
 }
