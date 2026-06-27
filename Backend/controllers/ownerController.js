@@ -55,9 +55,9 @@ const registerUser=asyncHandler(async(req,res)=>
 
 const loginUser=asyncHandler(async(req,res)=>
 {
-    let {email,password}=req.body
-    if (!email || !password) throw new apiError(400,"All fields are required")
-    const currentUser= await owner.findOne({email:email}).select("-__v -refreshtoken -createdAt")
+    let {email,password, phone}=req.body
+    if ((!phone && !email )|| !password) throw new apiError(400,"All fields are required")
+    const currentUser= await owner.findOne({$or:[{email},{phone}]}).select("-__v -refreshtoken -createdAt")
     if (!currentUser) throw new apiError(401,"User not found")
     const valid = await currentUser.isPwdCorrect(password);
     if (!valid) throw new apiError(403,"Invalid credentials")

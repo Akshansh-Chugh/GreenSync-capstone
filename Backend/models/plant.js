@@ -1,5 +1,5 @@
 import mongoose, {Schema, model} from "mongoose"
-
+import jwt from "jsonwebtoken"
 
 const plantSchema= new Schema({
     type:{
@@ -45,5 +45,10 @@ const plantSchema= new Schema({
     }
 
 },{timestamps:true})
+
+plantSchema.methods.generateRedreshToken= function()
+{
+    return jwt.sign({_id:this._id}, process.env.PLANT_REFRESH_KEY)
+}
 
 export const plant = mongoose.model("Plant",plantSchema)
