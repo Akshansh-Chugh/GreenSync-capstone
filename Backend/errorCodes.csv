@@ -1,6 +1,6 @@
 200, ok
 400, incomplete req
-401 duplicate resource
+401, duplicate resource
 402, invalid req
 403, wrong Password
 405, cookie not found

@@ -77,5 +77,8 @@ caretakerSchema.methods.generateRefreshToken= async function()
     return token
 }
 
+caretakerSchema.methods.myPlants = async function() {
+    return await mongoose.model("Customer").find({ caretaker: this._id, accepted: true }).populate("plant")
+}
 
 export const caretaker = mongoose.model("Caretaker",caretakerSchema)

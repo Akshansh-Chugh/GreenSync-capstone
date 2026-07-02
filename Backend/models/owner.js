@@ -82,5 +82,9 @@ ownerSchema.methods.generateRefreshToken= async function()
     return token
 }
 
+ownerSchema.methods.myPlants = async function() {
+    return await mongoose.model("CoOwner").find({ owner: this._id }).populate("plant")
+}
+
 
 export const owner = mongoose.model("Owner",ownerSchema)

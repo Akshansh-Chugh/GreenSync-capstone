@@ -5,6 +5,8 @@ import {owner} from "../models/owner.js";
 import { to_cloud ,cloud_del} from "../utils/cloudinary.js"
 import jwt, { decode } from "jsonwebtoken";
 import { caretaker } from "../models/caretaker.js";
+import { plant } from "../models/plant.js";
+import {customer} from "../models/customer.js"
 
 
 const cookieSettings=
@@ -188,6 +190,61 @@ const getAccess=asyncHandler(async(req,res)=>
             .json(new apiResponse(200,"Sucess"))
 })
 
+// const addCaretaker= async function (emailOrPhone,plantid) {
+
+//     // myplant?
+//     // validate inputs
+//     // caretaker exsists?
+//     // add to customer table
+//     // verify customer entry
+//     // success
+
+//     if(!emailOrPhone) throw new apiError(402,"Please enter an email/Phone no. of a registered caretaker")
+
+//     const exsists =await caretaker.findOne({$or:[{email:emailOrPhone},{phone:emailOrPhone}]})
+
+//     if(!exsists)
+//         throw new apiError(402,"No caretaker found")
+
+
+// }
+
+const addCaretaker = asyncHandler(async (req,res)=>
+{
+    const curr = req.user
+    req.plants=await curr.myPlants()
+    const{plantId, Caretaker,directCaretakerControl=false}= req.body
+    if(!plantId || !Caretaker)
+        throw new apiError(400,"Select a plant and caretaker")
+
+    const ownedPlant = req.plants.find(p => p.plant._id.toString() == plantId);
+
+    if (!ownedPlant)
+        throw new apiError(403, "Only an existing co-owner can add a caretaker.");
+
+    const C= await caretaker.findOne({$or:[{email:Caretaker},{phone:Caretaker}]})
+
+    if(!C)
+        throw new apiError(402,"This caretaker doesnot exsists")
+
+    if (ownedPlant.directCaretakerControl !==directCaretakerControl )
+        await plant.findByIdAndUpdate(plantId,{directCaretakerControl})
+
+    try
+    {
+        await customer.create({caretaker:C._id,plant:plantId})
+    }
+    catch(err)
+    {
+        if(err.code===11000)
+            throw new apiError(401, "Already exists");
+        throw err;
+    }
+    return res.status(200).
+    json(new apiResponse(200,{}, "Request sent sucessfully, waiting for caretaker to accept"))
+
+})
+
 export {registerUser,
     loginUser,                // input(email pwd), verify user exsist, correct pwd , tokens, send cokki , success
     updateDetails,            // auth , input, not email , not pwd , not profile, not phone, change in db ,verify, success
@@ -195,7 +252,7 @@ export {registerUser,
     logout,                   // auth, del cookie , del refresh token ,success
     changePwd,                // verify pwd , db.save, success
     changeProfilePic,         // auth , new pic , upload , remove old from (cloud,local), db.save, success 
-    // addCaretaker,          // auth , my plants , input, cr exsists, notify cr, update plant.direct , new customer entry, success
+    addCaretaker,             // auth , my plants , input, cr exsists, update plant.direct , new customer entry, success
     // removeCaretaker        // auth , my plants, cr accepted, del customer entry , notify cr , success 
     getAccess
 }

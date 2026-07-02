@@ -51,9 +51,9 @@ const create = asyncHandler(async (req,res)=>
     
     })
 
-const 
+// const 
 
-export {create, // same are owner
+export {create // same are owner
     // deleteCaretaker, //auth , verify pwd, notify customer, del caretaker table , del customer table, plant.direct caretaker control=0
     // updateCaretaker, // same as owner
     // login, // same

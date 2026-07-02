@@ -23,5 +23,6 @@ const customerSchema= new Schema({
 },{
     timestamps:true
 })
+customerSchema.index({caretaker:1, plant:1}, {unique:true})
 
 export const customer = mongoose.model("Customer",customerSchema)

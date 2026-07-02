@@ -3,11 +3,13 @@ import mongoose ,{Schema}from "mongoose"
 const notificationSchema= new Schema({
 
     to:{
-        type:String,
+        type:mongoose.Schema.ObjectId,
+        ref:"Plants",
         required:true
     },
     From:{
-        type:String,
+        type:mongoose.Schema.ObjectId,
+        ref:"Caretakers",
         required:true
     },
     message:{
@@ -16,7 +18,7 @@ const notificationSchema= new Schema({
     },
     seen:{
         type:String,
-        required:true
+        default:false
     },
 
 },{

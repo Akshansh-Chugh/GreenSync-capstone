@@ -4,12 +4,12 @@ const coOwnerSchema= new Schema({
 
     owner:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"Owners",
+        ref:"Owner",
         required:true
     },
     plant:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"Plants",
+        ref:"Plant",
         required:true
     }
 

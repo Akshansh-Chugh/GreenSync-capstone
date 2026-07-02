@@ -40,7 +40,8 @@ const registerESP= asyncHandler (async (req,res)=>
 const createPlant = asyncHandler(async (req, res) => {
     //first login from esp as a normal user to get acessToken
     let {type, name, season, water, location, area, directCaretakerControl,espMac,plant_pic} = req.body;
-    const Owner=req.user?._id    
+    const Owner=req.user?._id
+    
 
     // 1. Validation
     if ([Owner, type, name, season, water, location, area, directCaretakerControl,espMac].some(field => !field)) {
@@ -75,18 +76,18 @@ const createPlant = asyncHandler(async (req, res) => {
         area,
         directCaretakerControl,
         espMac  // stores plant number as well {espMac}{Plant number(1-5)}
-    },
+    }
     // {returnDocument:'after'}
 );
 
 
-    let newCoOwner = await coOwner.create(
-        {
-            owner:Owner,
-            plant:newPlant._id
-        },
-    )
-    newPlant= await plant.findById(newPlant._id).select("-_id -espMac -__v -updatedAt -createdAt")
+let newCoOwner = await coOwner.create(
+    {
+        owner:Owner,
+        plant:newPlant._id
+    },
+)
+    newPlant= await plant.findById(newPlant._id).select(" -espMac -__v -updatedAt -createdAt")
     newCoOwner = await coOwner.findById(newCoOwner._id).select("-_id -createdAt -updatedAt -__v")
     if(!newPlant || !newCoOwner) throw new apiError(500, "Something went Wront")
 

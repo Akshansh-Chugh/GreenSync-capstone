@@ -5,6 +5,7 @@
 (post) /api/v1/owner/chnagePwd (newPwd)
 (post) /api/v1/owner/changeProfilePicture (profice_pic) multipart/form-data
 (post) /api/v1/owner/logout
+(post) /api/v1/owner/addCaretaker(plantId,Caretaker)
 
 (post) /api/v1/plant/create (type ,name, season , water, location , area, directCaretakerControl)
 (post) /api/v1/plant/readings (temp , humidity, soilMoisture, n , p ,k , plant1)
