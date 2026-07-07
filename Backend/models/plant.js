@@ -51,4 +51,15 @@ plantSchema.methods.generateRedreshToken= function()
     return jwt.sign({_id:this._id}, process.env.PLANT_REFRESH_KEY)
 }
 
+plantSchema.pre('findOneAndDelete', async function(){
+    const pId =this.getFilter()._id;
+    
+    await Promise.all([
+        mongoose.model("CoOwner").deleteMany({ plant: pId }),
+        mongoose.model("Customer").deleteMany({ plant: pId }),
+        // mongoose.model("Fertilizer").deleteMany({ plant: pId }),
+        // mongoose.model("Notification").deleteMany({ to: pId }),
+        mongoose.model("Reading").deleteMany({ plant: pId })
+     ]); });
+
 export const plant = mongoose.model("Plant",plantSchema)

@@ -12,7 +12,8 @@ const customerSchema= new Schema({
     {
         type: mongoose.Schema.ObjectId,
         ref: "Plants",
-        required:true
+        required:true,
+        index:true
     },
     accepted:
     {
@@ -23,6 +24,7 @@ const customerSchema= new Schema({
 },{
     timestamps:true
 })
-customerSchema.index({caretaker:1, plant:1}, {unique:true})
+customerSchema.index({plant:1,caretaker:1}, {unique:true})
+customerSchema.index({caretaker:1,plant:1})
 
 export const customer = mongoose.model("Customer",customerSchema)

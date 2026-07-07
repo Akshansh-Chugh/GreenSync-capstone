@@ -5,7 +5,8 @@ const notificationSchema= new Schema({
     to:{
         type:mongoose.Schema.ObjectId,
         ref:"Plants",
-        required:true
+        required:true,
+        index:true
     },
     From:{
         type:mongoose.Schema.ObjectId,

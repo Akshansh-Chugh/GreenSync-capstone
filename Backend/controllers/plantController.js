@@ -33,7 +33,7 @@ const registerESP= asyncHandler (async (req,res)=>
      
 
     res.status(200)
-    .cookie("accessToken",)
+    .cookie("accessToken",cookieSettings)
 })
 
 
@@ -60,10 +60,6 @@ const createPlant = asyncHandler(async (req, res) => {
         let local_path=plant_pic        
         plant_pic=await to_cloud(plant_pic)
     }
-
-    // 3. Generate the Custom ID
-    // Using ownerDoc.totalFeilds (matches your typo in the schema)
-    const customPlantId = `${Owner}${(ownerDoc.totalFeilds || 0) + 1}`;
 
     // 4. Create the Plant
     let newPlant = await plant.create({
@@ -104,11 +100,37 @@ let newCoOwner = await coOwner.create(
     .json(new apiResponse(200, {newPlant, newCoOwner}, "Plant created successfully"));
 });
 
-export default createPlant;
+const deletePlant = asyncHandler(async(req,res)=>
+{
+    // Plant refferes to ._id of plant to be del
+    let {Plant}=req.body
+    let OWNER= req.user
+    if(!Plant)
+        throw new apiError(400,"provide _id as 'Plant'")
+
+    let old= await plant.findById(Plant)
+    if(!old)
+        throw new apiError(402,"Plant not found")
+
+    if (!JSON.stringify(await OWNER.myPlants()).includes(Plant))
+        throw new apiError(402,"Only a co-Owner can delete the plant")
+    // Plant="6a22f56e9ba26252a8d96de0"
+    old = await plant.findByIdAndDelete(Plant)  // returns old document if deleted , Null if not deleted
+    if(!old) // if(!Null)
+        throw new apiError(500,"something went wrong")
+
+    OWNER.totalFeilds-= 1
+    OWNER.save()
+    res.status(200)
+    .json(new apiResponse(200, "Plant deleted successfully"))
+})
+
 export {
     registerESP,
     createPlant,  //auth(owner) ,input , validate , add to plant table ,inc owner.noOfPlants, add to co owner table
-    // deletePlant,  // auth(owner), verify pwd , my plants , del (plant , customer , co owner , fertiliser , reading) ,decrement owner.noOfPlants,notify (cr , co owner)
+    deletePlant,  // auth(owner), my plants , del (plant , customer , co owner , fertiliser , reading, notification) ,decrement owner.noOfPlants,notify ( co owner)
     // activateWater,//auth , my plants or (customer and direct cc) , try on esp (do not send success as esp might take hours to water)
     // water_eq    // cors , success
 }
+
+// enable fertiliser , notification in plants model in pre.(findOneAndDelete), after schema had been registered

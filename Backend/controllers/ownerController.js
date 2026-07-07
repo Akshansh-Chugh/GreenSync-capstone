@@ -7,6 +7,7 @@ import jwt, { decode } from "jsonwebtoken";
 import { caretaker } from "../models/caretaker.js";
 import { plant } from "../models/plant.js";
 import {customer} from "../models/customer.js"
+import { coOwner } from "../models/coOwner.js";
 
 
 const cookieSettings=
@@ -171,13 +172,8 @@ const logout= asyncHandler(async(req,res)=>
     .json({message:"Sucess"})
 })
 
-const deleteOwner= asyncHandler(async(req,res)=>
-{
-
-})
 const getAccess=asyncHandler(async(req,res)=>
 {
-    // console.log(req)
     const cookie = req.cookies?.refreshToken
     if(!cookie) throw new apiError(405,"No refresh token")
     let decoded
@@ -186,7 +182,7 @@ const getAccess=asyncHandler(async(req,res)=>
     const user= await owner.findById(decoded?._id)
     if(cookie == user.refreshToken) 
         res.status(200)
-            .cookie("accessToken",await user.generateAccessToken,cookieSettings)
+            .cookie("accessToken",await user.generateAccessToken(),cookieSettings)
             .json(new apiResponse(200,"Sucess"))
 })
 
@@ -242,6 +238,55 @@ const addCaretaker = asyncHandler(async (req,res)=>
     }
     return res.status(200).
     json(new apiResponse(200,{}, "Request sent sucessfully, waiting for caretaker to accept"))
+})
+
+const deleteOwner= asyncHandler(async(req,res)=>
+{
+    const {email,phone,password, removeAllPlants}=req.body
+    if((!email && !phone)||!password)
+        throw new apiError(400,"Creds missing")
+
+    const exsistingUser= req.user
+
+    if(!exsistingUser.isPwdCorrect(password))
+        throw new apiError(403,"Incorrect password")
+
+    const myFeilds=exsistingUser.myPlants()
+
+    // plants exclusive to this owner
+
+
+    const exclusivePlants= await coOwner.aggregate([
+        {
+            $match:
+            {
+                plant: {$in: myFeilds}
+            }
+        },
+        {
+            $group:
+            {
+
+            }
+        }
+])
+
+})
+
+const myPlants=asyncHandler (async(req,res)=>
+{
+    const exsisting= req.user
+
+    if (!exsisting)
+        throw new apiError(400,"Please Login first")
+
+    const Plants = await exsisting.myPlants()
+    
+    if(!Plants)
+        throw new apiError(200,"Register your First plant😊")
+
+    res.status(200)
+    .json(new apiResponse(200,Plants,`Sucesfully fetched your ${exsisting.totalFeilds} plants`))
 
 })
 
@@ -253,6 +298,8 @@ export {registerUser,
     changePwd,                // verify pwd , db.save, success
     changeProfilePic,         // auth , new pic , upload , remove old from (cloud,local), db.save, success 
     addCaretaker,             // auth , my plants , input, cr exsists, update plant.direct , new customer entry, success
-    // removeCaretaker        // auth , my plants, cr accepted, del customer entry , notify cr , success 
-    getAccess
+    // removeCaretaker        // auth , my plants, cr accepted, del customer entry , success 
+    getAccess,
+    // getNotification        // auth, , my plants , send where {to=plant} in my plants (from notification table), add to res , sucess
+    myPlants                  // auth, owner.myPlants(),sucess 
 }

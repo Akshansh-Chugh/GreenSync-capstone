@@ -29,7 +29,8 @@ const readings= new Schema({
     plant:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"plant",
-        required:true
+        required:true,
+        index:true
     }
 
 },{timestamps:true})

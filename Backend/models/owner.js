@@ -83,7 +83,7 @@ ownerSchema.methods.generateRefreshToken= async function()
 }
 
 ownerSchema.methods.myPlants = async function() {
-    return await mongoose.model("CoOwner").find({ owner: this._id }).populate("plant")
+    return await mongoose.model("CoOwner").find({ owner: this._id }).select("-_id -__v -owner").populate({path:"plant", select:"-__v -espMac -createdAt -updatedAt"})
 }
 
 
