@@ -7,6 +7,7 @@
 (post) /api/v1/owner/logout
 (post) /api/v1/owner/addCaretaker(plantId,Caretaker)
 (get) /api/v1/owner/myPlants()
+(delete) /api/v1/owner/delete (email, password)
 
 (post) /api/v1/plant/create (type ,name, season , water, location , area, directCaretakerControl)
 (post) /api/v1/plant/readings (temp , humidity, soilMoisture, n , p ,k , plant1)

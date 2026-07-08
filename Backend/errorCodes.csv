@@ -5,3 +5,7 @@
 403, wrong Password
 405, cookie not found
 406, invalid Cookie
+407,delete failed
+
+500, server side error
+501, delete failed from our side

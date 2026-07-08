@@ -86,5 +86,15 @@ ownerSchema.methods.myPlants = async function() {
     return await mongoose.model("CoOwner").find({ owner: this._id }).select("-_id -__v -owner").populate({path:"plant", select:"-__v -espMac -createdAt -updatedAt"})
 }
 
+ownerSchema.pre("findOneAndDelete", async function()
+{
+    const oId =this.getFilter()._id
+    Promise.all([
+        await mongoose.model("Customer").deleteMany({owner:oId}),
+        await mongoose.model("Owner").deleteMany({owner:oId}),
+        await mongoose.model("CoOwner").deleteMany({owner:oId}),
+        // await mongoose.model("Notification").deleteMany({owner:oId}),
+    ])
+})
 
 export const owner = mongoose.model("Owner",ownerSchema)

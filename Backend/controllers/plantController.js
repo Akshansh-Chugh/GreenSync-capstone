@@ -4,7 +4,7 @@ import { apiError } from "../utils/apiError.js";
 import {plant} from "../models/plant.js"
 import {owner} from "../models/owner.js"
 import {coOwner} from "../models/coOwner.js"
-import { to_cloud } from "../utils/cloudinary.js";
+import { to_cloud, cloud_del } from "../utils/cloudinary.js";
 
 const cookieSettings=
 {
@@ -114,8 +114,12 @@ const deletePlant = asyncHandler(async(req,res)=>
 
     if (!JSON.stringify(await OWNER.myPlants()).includes(Plant))
         throw new apiError(402,"Only a co-Owner can delete the plant")
-    // Plant="6a22f56e9ba26252a8d96de0"
+    
     old = await plant.findByIdAndDelete(Plant)  // returns old document if deleted , Null if not deleted
+    if(old.plant_pic.toString() !== "https://res.cloudinary.com/chugh/image/upload/v1780674139/grapes_np2tom.jpg") //not default
+    {
+        
+        await cloud_del(old.plant_pic)}
     if(!old) // if(!Null)
         throw new apiError(500,"something went wrong")
 
@@ -128,7 +132,7 @@ const deletePlant = asyncHandler(async(req,res)=>
 export {
     registerESP,
     createPlant,  //auth(owner) ,input , validate , add to plant table ,inc owner.noOfPlants, add to co owner table
-    deletePlant,  // auth(owner), my plants , del (plant , customer , co owner , fertiliser , reading, notification) ,decrement owner.noOfPlants,notify ( co owner)
+    deletePlant,  // auth(owner), my plants , del (plant , customer , co owner , fertiliser , reading, notification) ,decrement owner.noOfPlants, delete profile photo ,notify ( co owner)
     // activateWater,//auth , my plants or (customer and direct cc) , try on esp (do not send success as esp might take hours to water)
     // water_eq    // cors , success
 }

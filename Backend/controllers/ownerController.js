@@ -242,35 +242,51 @@ const addCaretaker = asyncHandler(async (req,res)=>
 
 const deleteOwner= asyncHandler(async(req,res)=>
 {
-    const {email,phone,password, removeAllPlants}=req.body
+    const {email,phone,password}=req.body
     if((!email && !phone)||!password)
         throw new apiError(400,"Creds missing")
 
-    const exsistingUser= req.user
-
-    if(!exsistingUser.isPwdCorrect(password))
-        throw new apiError(403,"Incorrect password")
+    const exsistingUser= await owner.findById( req.user._id) // why not get from req.user? ->> bcs req.user does not contain password
+    let valid = await exsistingUser.isPwdCorrect(password) 
+    if(!valid)
+        throw new apiError(403,"Incorrect creds")
 
     const myFeilds=exsistingUser.myPlants()
 
     // plants exclusive to this owner
+    const plants = await coOwner.find({owner:exsistingUser._id},{plant:1,_id:0})
 
+    const result = []
 
-    const exclusivePlants= await coOwner.aggregate([
-        {
-            $match:
-            {
-                plant: {$in: myFeilds}
-            }
-        },
-        {
-            $group:
-            {
+        // generally avoid loops as , a simple o(n) can become really expensive with million plants
+        // but here complexity will be o(plants * log(n))
+        // assuming deleteowner will be rarely used and say a owner has 20 plants out of a million entries
+        // loop runs 20*log(1000000)= 400 times
+        // if it was common operation, we would maintain totalOwners feild in plant 
 
-            }
-        }
-])
+    for (const { plant } of plants) {
+        const ownerCount = await coOwner.countDocuments({ plant }) 
 
+        if (ownerCount === 1) 
+            result.push(plant)
+    }
+
+    if(result.length>0)
+        throw new apiError(407,`Delete failed\nConsider deleting these ${result}`)
+
+    const old= await owner.findByIdAndDelete(exsistingUser._id).select( "-_id -password -refreshToken ") // del from other tables is handeled in pre method in owner model
+
+    if(!old)
+        throw new apiError(501,"Delete failed from serverside")
+
+    if(exsistingUser.profile_pic.toString() !== "https://res.cloudinary.com/chugh/image/upload/hzlskdlloutmzgg6ihfh.jpg") // not default
+        await cloud_del(exsistingUser.profile_pic)
+
+    res.status(200)
+    .clearCookie("refreshToken",cookieSettings)
+    .clearCookie("accessToken",cookieSettings)
+    .clearCookie("PlantRefresh",cookieSettings)
+    .json(new apiResponse(200,`Deleted ${old}`))
 })
 
 const myPlants=asyncHandler (async(req,res)=>
@@ -282,7 +298,7 @@ const myPlants=asyncHandler (async(req,res)=>
 
     const Plants = await exsisting.myPlants()
     
-    if(!Plants)
+    if(!Plants.length)
         throw new apiError(200,"Register your First plant😊")
 
     res.status(200)
@@ -290,10 +306,15 @@ const myPlants=asyncHandler (async(req,res)=>
 
 })
 
+const addCoOwner = asyncHandler (async (req,res)=>
+{
+
+})
+
 export {registerUser,
     loginUser,                // input(email pwd), verify user exsist, correct pwd , tokens, send cokki , success
     updateDetails,            // auth , input, not email , not pwd , not profile, not phone, change in db ,verify, success
-    // deleteOwner,           // auth , verify pwd , not only owner ,remove from customer table, del (owner , co owner , notification) table, remove cookie , success
+    deleteOwner,              // auth , verify pwd , not only owner ,remove from (customer, owner , co owner , notification) table,delete profilePic, remove cookie, success
     logout,                   // auth, del cookie , del refresh token ,success
     changePwd,                // verify pwd , db.save, success
     changeProfilePic,         // auth , new pic , upload , remove old from (cloud,local), db.save, success 
@@ -301,5 +322,7 @@ export {registerUser,
     // removeCaretaker        // auth , my plants, cr accepted, del customer entry , success 
     getAccess,
     // getNotification        // auth, , my plants , send where {to=plant} in my plants (from notification table), add to res , sucess
-    myPlants                  // auth, owner.myPlants(),sucess 
+    myPlants                  // auth, owner.myPlants(),sucess
+    //addCoOwner              // auth , my plants , verify inputs, user exsists?, plant exsists?, add to coOwner, sucess
 }
+// fix deleteowner-> model -> notification
