@@ -308,6 +308,48 @@ const myPlants=asyncHandler (async(req,res)=>
 
 const addCoOwner = asyncHandler (async (req,res)=>
 {
+    const exsistingUser= req.user
+    let plants= await exsistingUser.myPlants()
+    
+    const {email, phone, pId}=req.body
+    
+    if((!email && !phone)|| !pId)
+        throw new apiError(400,"Incomplete creds")
+
+    const newOwner =await owner.findOne({$or:[{email},{phone}]})
+
+    if(!newOwner)
+        throw new apiError(404, "User not found")
+
+    const Plant= await plant.findById(pId)
+
+    if(!Plant)
+        throw new apiError(404, "Plant not found")
+
+    let valid=false
+
+    for(const {plant} of plants)
+        if(plant._id.toString() === pId)
+        {
+            valid=true
+            break
+        }
+
+    if(!valid)
+        throw new apiError(402,"You may only share plants that you own")
+
+    const exsistingCoOwner= await coOwner.exists({owner:newOwner._id ,plant:pId})
+
+    if(exsistingCoOwner)
+        throw new apiError(401, `${newOwner.name} is already a co-Owner of this plant`)
+
+    const newco = await coOwner.create({owner:newOwner._id , plant:pId })
+    
+    if(!newco)
+        throw new apiError(500,"something went wrong")
+
+    res.status(200)
+    .json(new apiResponse(200,{},"Added new co-owner sucessfully"))
 
 })
 
@@ -322,7 +364,8 @@ export {registerUser,
     // removeCaretaker        // auth , my plants, cr accepted, del customer entry , success 
     getAccess,
     // getNotification        // auth, , my plants , send where {to=plant} in my plants (from notification table), add to res , sucess
-    myPlants                  // auth, owner.myPlants(),sucess
-    //addCoOwner              // auth , my plants , verify inputs, user exsists?, plant exsists?, add to coOwner, sucess
+    myPlants,                 // auth, owner.myPlants(),sucess
+    addCoOwner                // auth , my plants , verify inputs, user exsists?, plant exsists?,not exsisting co-owner?, add to coOwner, sucess
+    // leavePlant             // auth , not only owner, 
 }
 // fix deleteowner-> model -> notification

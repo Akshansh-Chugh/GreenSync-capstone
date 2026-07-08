@@ -3,6 +3,7 @@
 401, duplicate resource
 402, invalid req
 403, wrong Password
+404, resource not found
 405, cookie not found
 406, invalid Cookie
 407,delete failed

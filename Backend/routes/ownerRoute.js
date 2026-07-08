@@ -1,6 +1,6 @@
 import {Router} from "express"
 import { upload } from "../middleware/multerMiddleware.js";
-import { registerUser , loginUser, updateDetails, changePwd,changeProfilePic, logout, getAccess, addCaretaker, myPlants, deleteOwner} from "../controllers/ownerController.js"
+import { registerUser , loginUser, updateDetails, changePwd,changeProfilePic, logout, getAccess, addCaretaker, myPlants, deleteOwner, addCoOwner} from "../controllers/ownerController.js"
 import Check_required_fields from "../checks/ownerCheck.js"
 import { Jwt } from "../middleware/auth.middleware.js";
 
@@ -16,5 +16,6 @@ router.route("/logout").post(Jwt,logout)
 router.route("/getAccess").get(getAccess)
 router.route("/addCaretaker").post(Jwt,addCaretaker)
 router.route("/myPlants").get(Jwt,myPlants)
+router.route("/sharePlant").get(Jwt,addCoOwner)
 
 export default router;

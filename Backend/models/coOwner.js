@@ -16,5 +16,6 @@ const coOwnerSchema= new Schema({
     }
 
 },{timestamps:true})
-
+coOwnerSchema.index({ owner: 1, plant: 1 }, { unique: true });
+coOwnerSchema.index({ plant: 1, owner: 1 });
 export const coOwner = mongoose.model("CoOwner",coOwnerSchema)
