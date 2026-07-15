@@ -9,4 +9,4 @@ redis.on("error", (err) => {
     console.error("Redis error:", err);
 });
 
-export default redis;
+export default redis
