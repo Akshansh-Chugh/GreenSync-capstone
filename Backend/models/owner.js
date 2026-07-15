@@ -1,6 +1,7 @@
 import mongoose, {Schema, model} from "mongoose"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import redis from "../config/redis.js";
 
 
 const ownerSchema= new Schema({
@@ -82,8 +83,62 @@ ownerSchema.methods.generateRefreshToken= async function()
     return token
 }
 
-ownerSchema.methods.myPlants = async function() {
-    return await mongoose.model("CoOwner").find({ owner: this._id }).select("-_id -__v -owner").populate({path:"plant", select:"-__v -espMac -createdAt -updatedAt"})
+ownerSchema.methods.myPlants = async function () {
+
+    const ownerKey = `owner:${this._id}`
+
+    // owner cached ?
+    let plantIds = await redis.smembers(ownerKey)
+
+    if (plantIds.length === 0) {
+
+        const coOwners = await mongoose.model("CoOwner").find({ owner: this._id}).select("-_id -__v -owner").populate({path: "plant",select: "-__v -espMac -createdAt"})
+
+        // owner -> plant ids
+        if (coOwners.length)
+            await redis.sadd(ownerKey,...coOwners.map(c => c.plant._id.toString()))
+        await redis.expire(ownerKey,Number(process.env.REDIS_OWNER_EXPIRY))
+
+        // cache each plant
+        const pipeline = redis.pipeline()
+
+        for (const c of coOwners){
+            pipeline.set(`plant:${c.plant._id}`,JSON.stringify(c.plant))
+            pipeline.expire(`plant:${c.plant._id}`,Number(process.env.REDIS_PLANT_EXPIRY))
+        }
+        await pipeline.exec()
+
+        return coOwners
+    }
+
+    // cache hit
+    const keys = plantIds.map(id => `plant:${id}`)
+    const cachedPlants = await redis.mget(keys)
+    const result = []
+    const missing = []
+
+    cachedPlants.forEach((plant, i) => {
+        if (plant)
+            result.push({plant:JSON.parse(plant)})
+        else
+            missing.push(plantIds[i])
+    })
+
+    // search mongo only for missing plants
+    if (missing.length) {
+
+        const plants = await mongoose.model("Plant").find({_id: {$in: missing}}).select("-__v -espMac -createdAt")
+
+        const pipeline = redis.pipeline()
+
+        for (const plant of plants) {
+            pipeline.set(`plant:${plant._id}`,JSON.stringify(plant))
+            pipeline.expire(`plant:${plant._id}`,Number(process.env.REDIS_PLANT_EXPIRY))
+
+            result.push({ plant})
+        }
+        await pipeline.exec()}
+    return result
 }
 
 ownerSchema.pre("findOneAndDelete", async function()

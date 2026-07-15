@@ -1,7 +1,7 @@
-import connectDB from "./db/index.js"
+import connectDB from "./config/database.js"
 import { asyncHandler} from "./utils/asyncHandler.js"
 import app from "./app.js"
-
+import redis from "./config/redis.js"
 
 
 asyncHandler(await connectDB()

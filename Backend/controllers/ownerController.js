@@ -8,6 +8,7 @@ import { caretaker } from "../models/caretaker.js";
 import { plant } from "../models/plant.js";
 import {customer} from "../models/customer.js"
 import { coOwner } from "../models/coOwner.js";
+import redis from "../config/redis.js";
 
 
 const cookieSettings=
@@ -287,6 +288,7 @@ const deleteOwner= asyncHandler(async(req,res)=>
     .clearCookie("accessToken",cookieSettings)
     .clearCookie("PlantRefresh",cookieSettings)
     .json(new apiResponse(200,`Deleted ${old}`))
+    redis.del(`owner:${exsistingUser._id}`)
 })
 
 const myPlants=asyncHandler (async(req,res)=>
@@ -351,21 +353,72 @@ const addCoOwner = asyncHandler (async (req,res)=>
     res.status(200)
     .json(new apiResponse(200,{},"Added new co-owner sucessfully"))
 
+    redis.del(`owner:${newco._id}`)
+
+})
+
+const removeCaretaker =asyncHandler(async(req,res)=>
+{
+    const{Plant,Caretaker}=req.body
+    const Owner= req.user
+
+    if(!Plant || !Caretaker)
+        throw new apiError(400,"Plant and Caretaker needed")
+
+    const Plants =await Owner.myPlants()
+    const careTaker= await caretaker.findOne({$or:[{email:Caretaker},{phone:Caretaker}]})
+
+    if(!careTaker)
+        throw new apiError(404,"Caretaker not found")
+
+    const ownsPlant = Plants.some(({plant})=> String(plant._id) === String(Plant))
+
+    if(!ownsPlant)
+        throw new apiError(402, "Cannot delete plants that do not belong to you")
+
+    //no need to check cr exsists ! as del operation will return empty if no doc found
+
+    // no need to use await 
+    await customer.deleteOne({plant:Plant, caretaker:careTaker._id})
+    await plant.findByIdAndUpdate(Plant,{directCaretakerControl:false})
+
+    res.status(200)
+    .json(new apiResponse(200,"","Deletion sucessfull"))
+
+})
+
+const leavePlant = asyncHandler(async(req,res)=>
+{
+    const {Plant}= req.body
+
+    const ownerCount= await coOwner.countDocuments({plant:Plant})
+    if(ownerCount==1)
+        throw new apiError(402,"Delete or handover this plant first")
+
+    // no need to check if this user owns the plant 
+    const deleted = await coOwner.deleteOne({plant:Plant,owner:req.user._id})
+
+    if(!deleted)
+        throw new apiError(402,"You may not be owner of this plant")
+    
+    res.status(200)
+    .clearCookie("PlantRefresh",cookieSettings)
+    .json(new apiResponse(200,{},"sucess"))
+    redis.del(`owner:${req.user._id}`)
 })
 
 export {registerUser,
     loginUser,                // input(email pwd), verify user exsist, correct pwd , tokens, send cokki , success
     updateDetails,            // auth , input, not email , not pwd , not profile, not phone, change in db ,verify, success
-    deleteOwner,              // auth , verify pwd , not only owner ,remove from (customer, owner , co owner , notification) table,delete profilePic, remove cookie, success
+    deleteOwner,              // auth , verify pwd , not only owner ,remove from (customer, owner , co owner , notification) table,delete profilePic, remove cookie, success, del redis key
     logout,                   // auth, del cookie , del refresh token ,success
     changePwd,                // verify pwd , db.save, success
     changeProfilePic,         // auth , new pic , upload , remove old from (cloud,local), db.save, success 
     addCaretaker,             // auth , my plants , input, cr exsists, update plant.direct , new customer entry, success
-    // removeCaretaker        // auth , my plants, cr accepted, del customer entry , success 
+    removeCaretaker,          // auth , my plants, del customer entry , success 
     getAccess,
-    // getNotification        // auth, , my plants , send where {to=plant} in my plants (from notification table), add to res , sucess
-    myPlants,                 // auth, owner.myPlants(),sucess
-    addCoOwner                // auth , my plants , verify inputs, user exsists?, plant exsists?,not exsisting co-owner?, add to coOwner, sucess
-    // leavePlant             // auth , not only owner, 
+    myPlants,                 // auth , owner.myPlants(),sucess, add to redis(added my owner.myPlants())
+    addCoOwner,               // auth , my plants , verify inputs, user exsists?, plant exsists?,not exsisting co-owner?, add to coOwner, sucess, del new co-owner from redis
+    leavePlant                // auth , not only owner, del co-owner enrty, sucess, del redis owner
 }
 // fix deleteowner-> model -> notification

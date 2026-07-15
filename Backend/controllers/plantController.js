@@ -135,6 +135,7 @@ export {
     deletePlant,  // auth(owner), my plants , del (plant , customer , co owner , fertiliser , reading, notification) ,decrement owner.noOfPlants, delete profile photo ,notify ( co owner)
     // activateWater,//auth , my plants or (customer and direct cc) , try on esp (do not send success as esp might take hours to water)
     // water_eq    // cors , success
+    // get notificatioons
 }
 
 // enable fertiliser , notification in plants model in pre.(findOneAndDelete), after schema had been registered
