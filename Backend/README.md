@@ -1,2 +1,80 @@
-# GreenSync-capstone
-This repo contains capstone files for thapar 2027 batch group 9
+# Green Sync Backend
+
+![Backend API and plant data](https://source.unsplash.com/1200x500/?api,database,smart-farming)
+
+This folder contains the Node.js backend for Green Sync. It provides Express API routes for owners, caretakers, plants, sensor readings, authentication, uploads, and data persistence.
+
+## Contents
+
+```text
+Backend/
++-- app.js
++-- index.js
++-- package.json
++-- docker-compose.yml
++-- checks/
++-- config/
++-- controllers/
++-- middleware/
++-- models/
++-- routes/
++-- utils/
++-- public/
++-- temp/
++-- mongo/
+```
+
+## Application Flow
+
+```mermaid
+flowchart LR
+    Client["Client / Device"] --> App["app.js routes"]
+    App --> Routes["routes/"]
+    Routes --> Controllers["controllers/"]
+    Controllers --> Models["models/"]
+    Models --> MongoDB["MongoDB"]
+    Controllers --> Utils["utils/"]
+    Controllers --> Cloudinary["Cloudinary"]
+```
+
+## Setup
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the backend:
+
+```bash
+npm start
+```
+
+Run development mode:
+
+```bash
+npm run dev
+```
+
+Stop configured development containers:
+
+```bash
+npm run stop
+```
+
+## Key Files
+
+- `app.js` configures Express middleware and mounts API routes.
+- `index.js` connects to the database and starts the server.
+- `package.json` defines dependencies and npm scripts.
+- `docker-compose.yml` defines the local MongoDB replica set.
+- `endpoints` can be used to track API endpoint notes.
+- `errorCodes.csv` can be used to document application-level error codes.
+
+## Maintenance Notes
+
+- Keep route definitions, controller functions, and model fields in sync.
+- Keep secrets in `.env`; never commit production credentials.
+- Do not edit `node_modules/` manually.
+- Treat `mongo/`, `temp/`, and `public/` as runtime/generated folders unless specific files are intentionally added.
