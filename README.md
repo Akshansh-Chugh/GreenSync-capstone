@@ -1,8 +1,8 @@
 # Green Sync
 
-![Smart agriculture greenhouse](https://source.unsplash.com/1600x600/?smart-agriculture,greenhouse,iot)
+![Smart agriculture greenhouse](./Backend/public/assets/Intro.jpg)
 
-Green Sync is a capstone project for a smart plant monitoring and care system. It combines ESP32-based sensor hardware, KiCad electronics design, and a Node.js backend that manages owners, caretakers, plants, uploaded images, and plant sensor readings.
+Green Sync is a capstone project for a smart plant monitoring and care system. It combines ESP32-based sensor hardware, KiCad electronics design, and a Node.js backend that manages owners, **CARETAKERS**, plants, and plant sensor readings.
 
 The project is built as a complete hardware-plus-software prototype for tracking plant health metrics such as soil moisture, temperature, humidity, and NPK nutrient values.
 
@@ -11,21 +11,18 @@ The project is built as a complete hardware-plus-software prototype for tracking
 - [Overview](#overview)
 - [Features](#features)
 - [Architecture](#architecture)
-- [Repository Structure](#repository-structure)
 - [Tech Stack](#tech-stack)
 - [Backend Setup](#backend-setup)
 - [Environment Variables](#environment-variables)
 - [API Overview](#api-overview)
 - [Electronics and Firmware](#electronics-and-firmware)
-- [Project Documents](#project-documents)
-- [Maintenance Notes](#maintenance-notes)
 - [Future Scope](#future-scope)
 
 ## Overview
 
 Green Sync focuses on making plant care more measurable and automated. The hardware layer reads plant and environment data, while the backend stores user, plant, caretaker, and reading data for a future web or mobile dashboard.
 
-![IoT plant sensors](https://source.unsplash.com/1200x500/?soil-moisture,sensor,plant,iot)
+![IoT plant sensors](./Backend/public/assets/sensors.jpg)
 
 The repository currently includes:
 
@@ -66,41 +63,6 @@ flowchart LR
 ```
 
 The ESP32 gathers sensor data and can send readings to a database/API endpoint. The backend handles application records such as owners, caretakers, plants, co-owners, notifications, fertilizers, and readings.
-
-## Repository Structure
-
-```text
-.
-+-- Electronics/
-|   +-- Electronics.kicad_pcb
-|   +-- Electronics.kicad_sch
-|   +-- Electronics.kicad_pro
-|   +-- Green_sync.ino/
-|   +-- Electronics-backups/
-+-- Website/
-|   +-- Backend/
-|       +-- Backend/
-|       |   +-- app.js
-|       |   +-- index.js
-|       |   +-- config/
-|       |   +-- controllers/
-|       |   +-- checks/
-|       |   +-- middleware/
-|       |   +-- models/
-|       |   +-- routes/
-|       |   +-- utils/
-|       |   +-- docker-compose.yml
-|       |   +-- package.json
-|       +-- Electronics/
-+-- Green Sync.drawio
-+-- Capstone Project Proposal Template.docx
-+-- Capstone Project Proposal Template.pdf
-+-- Greensync report midterm.pdf
-+-- final.docx
-+-- final.pdf
-+-- prt0001.prt.*
-+-- README.md
-```
 
 ## Tech Stack
 
@@ -154,15 +116,7 @@ cd Website/Backend/Backend
 npm install
 ```
 
-### Start MongoDB
-
-The backend includes a Docker Compose file that starts five MongoDB containers and initializes a replica set named `rs0`.
-
-```bash
-docker compose up -d
-```
-
-The current npm scripts also expect Docker containers named `mongo` and `green-sync` for development:
+The current npm scripts expect Docker containers named `mongo` and `green-sync` for development:
 
 ```bash
 npm run dev
@@ -176,8 +130,6 @@ If those containers do not already exist, start the database with Docker Compose
 npm start
 ```
 
-The app entry point is `index.js`, which connects to MongoDB and starts the Express server on `PORT`.
-
 ## Environment Variables
 
 Create a `.env` file inside:
@@ -190,13 +142,13 @@ Recommended variables:
 
 ```env
 PORT=8000
-CHUGH_CORS_ORIGIN=http://localhost:3000
+CHUGH_CORS_ORIGIN
 
 MONGODB_URI=mongodb://localhost:27017/green-sync?replicaSet=rs0
 MONGO_ROOT=./mongo-data
 
 ACCESS_TOKEN_SECRET=replace_with_access_secret
-ACCESS_TOKEN_EXPIRY=1d
+ACCESS_TOKEN_EXPIRY=15m
 REFRESH_TOKEN_SECRET=replace_with_refresh_secret
 REFRESH_TOKEN_EXPIRY=10d
 
@@ -204,11 +156,9 @@ CLOUDINARY_CLOUD_NAME=replace_with_cloud_name
 CLOUDINARY_API_KEY=replace_with_api_key
 CLOUDINARY_API_SECRET=replace_with_api_secret
 
-REDIS_HOST=localhost
-REDIS_PORT=6379
+REDIS_HOST=
+REDIS_PORT=
 ```
-
-Keep real secrets out of Git.
 
 ## API Overview
 
@@ -226,7 +176,7 @@ Base API path:
 | `POST` | `/owner/login` | No | Login an owner. |
 | `POST` | `/owner/update` | Yes | Update owner details. |
 | `DELETE` | `/owner/delete` | Yes | Delete owner account. |
-| `POST` | `/owner/changePwd` | No | Change owner password. |
+| `POST` | `/owner/changePwd` | Yes | Change owner password. |
 | `POST` | `/owner/changeProfilePicture` | Yes | Update owner profile image. |
 | `POST` | `/owner/logout` | Yes | Logout owner. |
 | `GET` | `/owner/getAccess` | No | Get access token flow. |
@@ -274,40 +224,11 @@ Before uploading firmware, replace placeholders such as:
 ```cpp
 YOUR_WIFI_SSID
 YOUR_WIFI_PASSWORD
-YOUR_APP_ID
-YOUR_MONGODB_API_KEY
 ```
-
-The KiCad files in `Electronics/` define the PCB and schematic for the hardware prototype.
-
-## Project Documents
-
-- `Capstone Project Proposal Template.docx`
-- `Capstone Project Proposal Template.pdf`
-- `Greensync report midterm.pdf`
-- `final.docx`
-- `final.pdf`
-- `Green Sync.drawio`
-
-These files document the project proposal, reports, and system design diagrams.
-
-## Maintenance Notes
-
-- Keep this README updated when routes, models, or setup commands change.
-- Store credentials only in `.env` or secret managers.
-- Keep generated KiCad backups and CAD revisions organized before submission.
-- Prefer screenshots of the actual prototype over stock images when hardware photos are available.
-- Add API examples once request/response bodies stabilize.
 
 ## Future Scope
 
 - Build a frontend dashboard for owners and caretakers.
 - Add live charts for temperature, humidity, soil moisture, and NPK trends.
-- Add Swagger/OpenAPI documentation.
 - Add automated backend tests for auth, plant, and readings flows.
-- Move firmware secrets into a local ignored config file.
 - Add deployment instructions for the backend, MongoDB, Redis, and media storage.
-
-## Status
-
-Green Sync is an active capstone prototype for the Thapar 2027 batch Group 9. The repository currently contains the core backend, electronics files, firmware, reports, and design artifacts needed to continue development.
