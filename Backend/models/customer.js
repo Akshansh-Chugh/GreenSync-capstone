@@ -11,7 +11,7 @@ const customerSchema= new Schema({
     plant:
     {
         type: mongoose.Schema.ObjectId,
-        ref: "Plants",
+        ref: "Plant",
         required:true,
         index:true
     },

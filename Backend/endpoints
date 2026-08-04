@@ -1,16 +1,26 @@
 (put) /api/v1/owner/create (name , email , phone , password)
-(get) /api/owner/getAccess
+(get) /api/owner/getAccess()
 (post) /api/v1/owner/login (email , password) //need same url in frontend
 (post) /api/v1/owner/update (name , email , phone , age , adhaar)
-(post) /api/v1/owner/chnagePwd (newPwd)
+(post) /api/v1/owner/changePwd (newPwd)
 (post) /api/v1/owner/changeProfilePicture (profice_pic)// multipart/form-data
-(post) /api/v1/owner/logout
+(post) /api/v1/owner/logout()
 (post) /api/v1/owner/addCaretaker(plantId,Caretaker)
 (get) /api/v1/owner/myPlants()
+(get) /api/v1/owner/sharePlant(email,pId)
+(delete) /api/v1/owner/leavePlant(Plant)
 (delete) /api/v1/owner/delete (email, password)
+(delete) /api/v1/owner/removeCaretaker (Plant,Caretaker)
+
 
 (post) /api/v1/plant/create (type ,name, season , water, location , area, directCaretakerControl)
 (post) /api/v1/plant/readings (temp , humidity, soilMoisture, n , p ,k , plant1)
 (delete) /api/v1/plant/delete ("Plant": "_id") // get _id from myPlants
 
 (put) /api/v1/caretaker/create (name ,password, email,phone, qualification, adhaar)
+(get) /api/v1/caretaker/login (password,email,phone)
+(get) /api/v1/caretaker/logout()
+(post) /api/v1/caretaker/changePwd (oldPwd, newPwd)
+(post) /api/v1/caretaker/update (name, email, phone, age, adhaar, qualification)
+(post) /api/v1/caretaker/changeProfilePicture(profile_pic)
+(get) /api/v1/caretaker/myPlants()

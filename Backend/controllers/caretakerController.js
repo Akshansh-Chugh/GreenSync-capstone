@@ -145,6 +145,23 @@ const changeProfile = asyncHandler(async (req, res) => {
     return res.status(200)
     .json(new apiResponse(200,{profile_pic: user.profile_pic},`sucess: true`))})
 
+const myPlants=asyncHandler (async(req,res)=>
+{
+    const exsisting= req.user
+
+    if (!exsisting)
+        throw new apiError(400,"Please Login first")
+
+    const Plants = await exsisting.myPlants()
+    
+    if(!Plants.length)
+        throw new apiError(200,"Welcome to Green Sync, you can start acquiring customers")
+
+    res.status(200)
+    .json(new apiResponse(200,Plants,`Sucesfully fetched your ${Plants.length} plants`))
+
+})
+
 export {
     create,               // same are owner
     // deleteCaretaker,      // auth , verify pwd, notify customer, del caretaker table , del customer table
@@ -153,6 +170,7 @@ export {
     logout,               // same
     changePwd,            // same
     changeProfile,        // same
+    myPlants              // same
     // leavePlant,           // auth , plant in customer and accept=1 , notify , del customer
     // acceptReq,            // auth , plant in customer & accept, notify
     // recommend,            // auth , in customer table , accpted , add a notification entry
