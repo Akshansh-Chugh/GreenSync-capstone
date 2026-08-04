@@ -102,7 +102,7 @@ const changePwd= asyncHandler(async (req,res)=>
 {
     const {oldPwd, newPwd}= req.body
     if(!oldPwd || !newPwd) throw new apiError(400, "Need both old and new Password")
-
+// why not use auth middleware?     : no old pwd in it
     const cookie= req.cookies.accessToken
     if (!cookie) 
         throw new apiError(404,"Cookie not found")
@@ -131,7 +131,6 @@ const changeProfilePic = asyncHandler(async (req, res) => {
 
     if (!user) 
         throw new apiError(404, "User not found")
-    
 
     const oldPic = user.profile_pic
 
@@ -275,7 +274,7 @@ const deleteOwner= asyncHandler(async(req,res)=>
     if(result.length>0)
         throw new apiError(407,`Delete failed\nConsider deleting these ${result}`)
 
-    const old= await owner.findByIdAndDelete(exsistingUser._id).select( "-_id -password -refreshToken ") // del from other tables is handeled in pre method in owner model
+    const old= await exsistingUser.deleteAccount().select( "-_id -password -refreshToken ") // del from other tables is handeled as a transaction
 
     if(!old)
         throw new apiError(501,"Delete failed from serverside")
@@ -409,7 +408,7 @@ const leavePlant = asyncHandler(async(req,res)=>
 
 export {registerUser,
     loginUser,                // input(email pwd), verify user exsist, correct pwd , tokens, send cokki , success
-    updateDetails,            // auth , input, not email , not pwd , not profile, not phone, change in db ,verify, success
+    updateDetails,            // auth , input, not pwd , not profile, change in db ,verify, success
     deleteOwner,              // auth , verify pwd , not only owner ,remove from (customer, owner , co owner , notification) table,delete profilePic, remove cookie, success, del redis key
     logout,                   // auth, del cookie , del refresh token ,success
     changePwd,                // verify pwd , db.save, success

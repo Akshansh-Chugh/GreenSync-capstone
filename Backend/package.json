@@ -23,7 +23,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "docker start mongo green-sync && nodemon index.js",
+    "docker": "docker desktop start",
+    "containers": "docker start mongo green-sync && nodemon index.js",
     "start": "node index.js",
     "stop": "docker stop mongo green-sync"
   },

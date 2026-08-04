@@ -62,4 +62,32 @@ plantSchema.pre('findOneAndDelete', async function(){
         mongoose.model("Reading").deleteMany({ plant: pId })
      ]); });
 
+plantSchema.methods.deletePlant= async function ()
+{
+    const session= await mongoose.startSession()
+
+    try
+    {
+        await Promise.all([
+            mongoose.model("CoOwner").deleteMany({ plant: pId }),
+            mongoose.model("Customer").deleteMany({ plant: pId }),
+            // mongoose.model("Fertilizer").deleteMany({ plant: pId }),
+            // mongoose.model("Notification").deleteMany({ to: pId }),
+            mongoose.model("Reading").deleteMany({ plant: pId })])
+
+            await session.commitTransaction()
+            return this
+    }
+
+    catch(err)
+    {
+        await session.abortTransaction()
+        throw error
+    }
+    finally
+    {
+        session.endSession()
+    }
+}
+
 export const plant = mongoose.model("Plant",plantSchema)

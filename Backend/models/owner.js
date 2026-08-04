@@ -8,44 +8,44 @@ const ownerSchema= new Schema({
     name:{
         type:String,
         required:true
-    },
+},
     email:{
         type:String,
         required:true,
         unique: true
-    },
+},
     phone:{
         type:String,
         required:true,
         unique:true
-    },
+},
     password:{
         type:String,
         required:true
-    },
+},
     age:{
         type:Number,
         required:false
-    },
+},
     adhaar:{
         type:String,
         sparse:true,
         unique:true
-    },
+},
 
     totalFeilds:{
         type:Number,
         required:false
-    },
+},
     profile_pic:{
         type:String,
         default:"https://res.cloudinary.com/chugh/image/upload/hzlskdlloutmzgg6ihfh.jpg",
         required:false
-    },
+},
     refreshToken:{
         type:String,
         required:false
-    }
+}
 
 },{timestamps:true})
 
@@ -74,7 +74,7 @@ ownerSchema.methods.generateRefreshToken= async function()
         {
             _id:this._id,
             accessToken:this.accessToken
-        },
+},
         process.env.REFRESH_PWD,
         {expiresIn: process.env.REFRESH_TOKEN_EXPIRY}
     )
@@ -105,11 +105,11 @@ ownerSchema.methods.myPlants = async function () {
         for (const c of coOwners){
             pipeline.set(`plant:${c.plant._id}`,JSON.stringify(c.plant))
             pipeline.expire(`plant:${c.plant._id}`,Number(process.env.REDIS_PLANT_EXPIRY))
-        }
+}
         await pipeline.exec()
 
         return coOwners
-    }
+}
 
     // cache hit
     const keys = plantIds.map(id => `plant:${id}`)
@@ -122,7 +122,7 @@ ownerSchema.methods.myPlants = async function () {
             result.push({plant:JSON.parse(plant)})
         else
             missing.push(plantIds[i])
-    })
+})
 
     // search mongo only for missing plants
     if (missing.length) {
@@ -136,20 +136,34 @@ ownerSchema.methods.myPlants = async function () {
             pipeline.expire(`plant:${plant._id}`,Number(process.env.REDIS_PLANT_EXPIRY))
 
             result.push({ plant})
-        }
+}
         await pipeline.exec()}
     return result
 }
 
-ownerSchema.pre("findOneAndDelete", async function()
-{
-    const oId =this.getFilter()._id
-    Promise.all([
-        await mongoose.model("Customer").deleteMany({owner:oId}),
-        await mongoose.model("Owner").deleteMany({owner:oId}),
-        await mongoose.model("CoOwner").deleteMany({owner:oId}),
-        // await mongoose.model("Notification").deleteMany({owner:oId}),
-    ])
-})
+
+ownerSchema.methods.deleteAccount = async function () {
+
+    const session = await mongoose.startSession()
+
+    try {
+        session.startTransaction()
+        const oId = this._id
+
+        await mongoose.model("Customer").deleteMany({ owner: oId},{ session})
+        await mongoose.model("CoOwner").deleteMany({ owner: oId},{ session})
+        // await mongoose.model("Notification").deleteMany({ owner: oId},{ session})
+        await mongoose.model("Owner").deleteOne({ _id: oId},{ session})
+
+        await session.commitTransaction()
+        return this}
+    
+    catch (error) {
+
+        await session.abortTransaction()
+        throw error}
+
+    finally {
+        session.endSession()}}
 
 export const owner = mongoose.model("Owner",ownerSchema)
