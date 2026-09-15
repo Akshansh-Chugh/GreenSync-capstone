@@ -7,7 +7,7 @@ import { Jwt } from "../middleware/care.auth.middleware.js";
 const router= Router()
 
 router.route("/create").put(upload.fields([{name:"profile_pic",maxCount:1}]),Check_required_fields,create)
-router.route("/login").get(login)
+router.route("/login").post(login)
 router.route("/update").post(Jwt,Check_required_fields,updateCaretaker)
 // router.route("/delete").delete(Jwt,deleteOwner)
 router.route("/changePwd").post(changePwd)

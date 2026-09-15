@@ -18,7 +18,7 @@
 (delete) /api/v1/plant/delete ("Plant": "_id") // get _id from myPlants
 
 (put) /api/v1/caretaker/create (name ,password, email,phone, qualification, adhaar)
-(get) /api/v1/caretaker/login (password,email,phone)
+(post) /api/v1/caretaker/login (password,email,phone)
 (get) /api/v1/caretaker/logout()
 (post) /api/v1/caretaker/changePwd (oldPwd, newPwd)
 (post) /api/v1/caretaker/update (name, email, phone, age, adhaar, qualification)

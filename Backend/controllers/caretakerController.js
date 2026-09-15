@@ -9,7 +9,7 @@ import Check_required_fields from "../checks/ownerCheck.js"
     const cookieSettings=
 {
     httpOnly:true,
-    secure :true
+    secure :false
 }
 const create = asyncHandler(async (req,res)=>
 {

@@ -5,11 +5,12 @@ import {plant} from "../models/plant.js"
 import {owner} from "../models/owner.js"
 import {coOwner} from "../models/coOwner.js"
 import { to_cloud, cloud_del } from "../utils/cloudinary.js";
+import redis from "../config/redis.js"
 
 const cookieSettings=
 {
     httpOnly:true,
-    secure :true
+    secure :false
 }
 
 const registerESP= asyncHandler (async (req,res)=>
@@ -115,6 +116,8 @@ const deletePlant = asyncHandler(async(req,res)=>
     if (!JSON.stringify(await OWNER.myPlants()).includes(Plant))
         throw new apiError(402,"Only a co-Owner can delete the plant")
     
+    redis.del(`plant:${old._id}`)
+
     old = await plant.findByIdAndDelete(Plant)  // returns old document if deleted , Null if not deleted
     if(old.plant_pic.toString() !== "https://res.cloudinary.com/chugh/image/upload/v1780674139/grapes_np2tom.jpg") //not default
     {

@@ -14,7 +14,7 @@ import redis from "../config/redis.js";
 const cookieSettings=
 {
     httpOnly:true,
-    secure :true
+    secure :false
 }
 
 const registerUser=asyncHandler(async(req,res)=>
@@ -273,8 +273,9 @@ const deleteOwner= asyncHandler(async(req,res)=>
 
     if(result.length>0)
         throw new apiError(407,`Delete failed\nConsider deleting these ${result}`)
+    await redis.del(`owner:${exsistingUser._id}`,1);
 
-    const old= await exsistingUser.deleteAccount().select( "-_id -password -refreshToken ") // del from other tables is handeled as a transaction
+    const old= await exsistingUser.deleteAccount() // del from other tables is handeled as a transaction
 
     if(!old)
         throw new apiError(501,"Delete failed from serverside")

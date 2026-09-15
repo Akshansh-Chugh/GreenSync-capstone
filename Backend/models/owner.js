@@ -90,9 +90,10 @@ ownerSchema.methods.myPlants = async function () {
     // owner cached ?
     let plantIds = await redis.smembers(ownerKey)
 
-    if (plantIds.length === 0) {
+    if (plantIds.length !== this.totalFeilds) {        
 
-        const coOwners = await mongoose.model("CoOwner").find({ owner: this._id}).select("-_id -__v -owner").populate({path: "plant",select: "-__v -espMac -createdAt"})
+        const coOwners = await mongoose.model("CoOwner").find({ owner: this._id}).select("-_id -__v -owner -createdAt -updatedAt").populate({path: "plant",select: "-__v -espMac -createdAt -updatedAt"})
+        
 
         // owner -> plant ids
         if (coOwners.length)

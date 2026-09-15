@@ -5,7 +5,9 @@ const connectDB = async () => {
 
     try
     {
-        const connection =await mongoose.connect(`${process.env.LOCAL_DOCKER}/${DB_NAME}`)
+        const connection =await mongoose.connect(process.env.LOCAL_DOCKER, {
+  directConnection: true
+});
         console.log(connection.connection.host)
     }
 
