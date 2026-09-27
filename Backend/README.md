@@ -1,7 +1,5 @@
 # Green Sync Backend
 
-![Backend API and plant data](https://source.unsplash.com/1200x500/?api,database,smart-farming)
-
 This folder contains the Node.js backend for Green Sync. It provides Express API routes for owners, caretakers, plants, sensor readings, authentication, uploads, and data persistence.
 
 ## Contents
@@ -71,10 +69,3 @@ npm run stop
 - `docker-compose.yml` defines the local MongoDB replica set.
 - `endpoints` can be used to track API endpoint notes.
 - `errorCodes.csv` can be used to document application-level error codes.
-
-## Maintenance Notes
-
-- Keep route definitions, controller functions, and model fields in sync.
-- Keep secrets in `.env`; never commit production credentials.
-- Do not edit `node_modules/` manually.
-- Treat `mongo/`, `temp/`, and `public/` as runtime/generated folders unless specific files are intentionally added.
