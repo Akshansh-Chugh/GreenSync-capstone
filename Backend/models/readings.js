@@ -16,15 +16,12 @@ const readings= new Schema({
     },
     n:{
         type:Number,
-        required:true
     },
     p:{
         type:Number,
-        required:true
     },
     k:{
         type:Number,
-        required:true
     },
     plant:{
         type:mongoose.Schema.Types.ObjectId,

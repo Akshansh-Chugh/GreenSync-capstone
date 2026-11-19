@@ -29,10 +29,6 @@ const registerESP= asyncHandler (async (req,res)=>
     
     if (! await owner.isPwdCorrect(password))
         throw new apiError(402,"Username or Password is incorrect")
-    
-
-     
-
     res.status(200)
     .cookie("accessToken",cookieSettings)
 })
@@ -136,9 +132,6 @@ export {
     registerESP,
     createPlant,  //auth(owner) ,input , validate , add to plant table ,inc owner.noOfPlants, add to co owner table
     deletePlant,  // auth(owner), my plants , del (plant , customer , co owner , fertiliser , reading, notification) ,decrement owner.noOfPlants, delete profile photo ,notify ( co owner)
-    // activateWater,//auth , my plants or (customer and direct cc) , try on esp (do not send success as esp might take hours to water)
-    // water_eq    // cors , success
-    // get notificatioons
 }
 
 // enable fertiliser , notification in plants model in pre.(findOneAndDelete), after schema had been registered

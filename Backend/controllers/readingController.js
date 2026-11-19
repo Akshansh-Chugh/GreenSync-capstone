@@ -1,1 +1,0 @@
-export{addReadings, viewLast30Days}

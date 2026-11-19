@@ -24,3 +24,6 @@
 (post) /api/v1/caretaker/update (name, email, phone, age, adhaar, qualification)
 (post) /api/v1/caretaker/changeProfilePicture(profile_pic)
 (get) /api/v1/caretaker/myPlants()
+
+(put) /api/v1/sensor/addReading (plant1, soilMoisture, humidity, temp, n, p, k)
+(post) /api/v1/sensor/readings (plantId) // sends plant's sensor readings
